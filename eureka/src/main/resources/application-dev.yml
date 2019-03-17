@@ -1,0 +1,13 @@
+server:
+  port: 9000
+spring:
+  security:
+    user:
+      name: rubbish
+      password: admin
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://127.0.0.1:9000/eureka

@@ -1,0 +1,37 @@
+server:
+  port: 10001
+eureka:
+  client:
+    service-url:
+      defaultZone: http://rubbish:admin@127.0.0.1:9000/eureka
+  instance:
+    appname: gateway
+    prefer-ip-address: true
+    hostname: gateway_host
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          # 启用服务名称路由
+          enabled: true
+          # 服务名小写（默认需要服务名大写）
+          lower-case-service-id: true
+      routes:
+      - id: one
+        uri: lb://user
+        predicates:
+        - Path=/user2/**
+        filters:
+        - StripPrefix=1
+logging:
+  level:
+    root: debug
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -1,0 +1,29 @@
+server:
+  port: 8000
+# 注册中心
+eureka:
+  client:
+    service-url:
+      defaultZone: http://rubbish:admin@127.0.0.1:9000/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: user-a
+spring:
+  # 数据源
+  datasource:
+    platform: mysql
+    driver-class-name: net.sf.log4jdbc.DriverSpy
+    url: jdbc:log4jdbc:mysql://104.155.218.48:3306/rubbish-dev
+    username: root
+    password: admin
+  application:
+    name: user
+# 日志
+logging:
+  level:
+    jdbc:
+      sqltiming: info
+      sqlonly: off
+      audit: off
+      resultset: off
+      connection: off

@@ -1,0 +1,19 @@
+server:
+  port: 12000
+eureka:
+  client:
+    service-url:
+      defaultZone: http://rubbish:admin@127.0.0.1:9000/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: auth-server-a
+spring:
+  application:
+    name: auth-server
+  profiles:
+    include: auth-server
+logging:
+  level:
+    root: debug
+auth-server:
+  access-token-validity-seconds: 10000
