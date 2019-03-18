@@ -1,11 +1,12 @@
-package com.yaoyyy.rubbish.oauth2server.feign.fallback;
+package com.yaoyyy.rubbish.authserver.config;
 
-import com.yaoyyy.rubbish.common.R;
-import com.yaoyyy.rubbish.oauth2server.feign.UserClient;
-import com.yaoyyy.rubbish.oauth2server.pojo.UserAuthTO;
-import feign.hystrix.FallbackFactory;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
@@ -31,29 +32,55 @@ import org.springframework.stereotype.Component;
  * 　　　　　　　　  ┗┻┛ ┗┻┛+ + + +
  * <p>
  * rubbish-parent
- * 2019-03-13 22:57
+ * 2019-03-10 15:45
  *
- * @author yaoyy
+ * @author yaoyang
  */
-@Slf4j
+@Getter
+@Setter
 @Component
-public class UserClientFallbackFactory implements FallbackFactory<UserClient> {
+@ConfigurationProperties(prefix = "auth-server")
+public class AuthServerProperties {
 
+    /**
+     * 保存token的cookie名称
+     */
+    private String tokenCookieName = "RUBBISH";
+    /**
+     * cookie过期时间（秒）
+     */
+    private Integer tokenCookieExpireSeconds = 1000;
+    /**
+     * cookie路径
+     */
+    private String tokenCookiePath = "/";
+    /**
+     * jwt签名
+     */
+    private String jwtSigningKey = "Y";
+    /**
+     * 客户端id
+     */
+    private String client = "gateway";
+    /**
+     * 客户端secret
+     */
+    private String secret = "admin";
+    /**
+     * 客户端权限
+     */
+    private String scope = "all";
+    /**
+     * token过期时间（秒）默认12小时
+     */
+    private Integer accessTokenValiditySeconds = 60 * 60 * 12;
+    /**
+     * 未登录时跳转路径
+     */
+    private String loginPage = "/";
+    /**
+     * security放行路径（只针对本服务）
+     */
+    private List<String> permits = new ArrayList<>();
 
-    @Override
-    public UserClient create(Throwable cause) {
-        return new UserClient() {
-
-            @Override
-            public R<String> userPwd(Long uid) {
-                return R.ok("");
-            }
-
-            @Override
-            public R<UserAuthTO> userAuth(String username) {
-                log.warn(cause.getMessage());
-                return R.error("熔断");
-            }
-        };
-    }
 }

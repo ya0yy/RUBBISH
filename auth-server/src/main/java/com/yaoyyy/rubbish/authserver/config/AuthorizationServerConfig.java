@@ -1,6 +1,6 @@
-package com.yaoyyy.rubbish.oauth2server.config;
+package com.yaoyyy.rubbish.authserver.config;
 
-import com.yaoyyy.rubbish.oauth2server.service.UserService;
+import com.yaoyyy.rubbish.authserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

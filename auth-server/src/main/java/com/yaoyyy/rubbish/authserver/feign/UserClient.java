@@ -1,7 +1,12 @@
-package com.yaoyyy.rubbish.oauth2server.controller;
+package com.yaoyyy.rubbish.authserver.feign;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.yaoyyy.rubbish.common.R;
+import com.yaoyyy.rubbish.authserver.feign.fallback.UserClientFallbackFactory;
+import com.yaoyyy.rubbish.authserver.pojo.UserAuthTO;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
@@ -27,15 +32,16 @@ import org.springframework.web.bind.annotation.RestController;
  * 　　　　　　　　  ┗┻┛ ┗┻┛+ + + +
  * <p>
  * rubbish-parent
- * 2019-03-05 00:51
+ * 2019-03-11 22:36
  *
  * @author yaoyang
  */
-@RestController
-public class TestController {
+@FeignClient(value = "user", fallbackFactory = UserClientFallbackFactory.class)
+public interface UserClient {
 
-    @GetMapping("/test")
-    public String test() {
-        return "test";
-    }
+    @RequestMapping(method = RequestMethod.GET, path = "/user_pwd/{uid}")
+    R<String> userPwd(@PathVariable("uid") Long uid);
+
+    @RequestMapping(method = RequestMethod.GET, path = "/user_auth/{username}")
+    R<UserAuthTO> userAuth(@PathVariable("username") String username);
 }

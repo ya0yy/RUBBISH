@@ -1,9 +1,13 @@
-package com.yaoyyy.rubbish.oauth2server.pojo;
+package com.yaoyyy.rubbish.authserver.config;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
@@ -29,17 +33,27 @@ import java.util.List;
  * 　　　　　　　　  ┗┻┛ ┗┻┛+ + + +
  * <p>
  * rubbish-parent
- * 2019-03-17 16:50
- *
- * user认证信息传输类
+ * 2019-03-12 00:08
  *
  * @author yaoyy
  */
-@Data
-@Accessors(chain = true)
-public class UserAuthTO {
-    private String username;
-    private Long uid;
-    private String password;
-    private List<String> roles;
+@Component
+public class JwtTokenEnhancer implements TokenEnhancer {
+
+    private final ThreadLocal<Long> uid = new ThreadLocal<>();
+
+    @Override
+    public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+        Map<String, Object> info = new HashMap<>();
+        // 从线程变量中拿到本次登录请求的uid
+        Long uid = this.uid.get();
+        info.put("uid", uid);
+        // 将info写入到token中，注意：此时token还是普通token，在下一个TokenEnhancer中才会转换为jwt
+        ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(info);
+        return accessToken;
+    }
+
+    public ThreadLocal<Long> getUid() {
+        return uid;
+    }
 }

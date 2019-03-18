@@ -1,6 +1,6 @@
-package com.yaoyyy.rubbish.oauth2server.aspect;
+package com.yaoyyy.rubbish.authserver.aspect;
 
-import com.yaoyyy.rubbish.oauth2server.config.AuthServerProperties;
+import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

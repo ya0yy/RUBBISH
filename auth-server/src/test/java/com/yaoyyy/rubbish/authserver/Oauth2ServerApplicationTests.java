@@ -1,4 +1,4 @@
-package com.yaoyyy.rubbish.oauth2server;
+package com.yaoyyy.rubbish.authserver;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
