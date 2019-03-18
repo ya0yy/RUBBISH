@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import com.yaoyyy.rubbish.user.pojo.User;
+import com.yaoyyy.rubbish.user.pojo.UserAuthTO;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +30,18 @@ public class UserMapperTest {
 
     @Test
     public void testGetUserPass() {
-        assertEquals(userMapper.getUserPass(1L), "123456");
+        assertEquals(userMapper.queryUserPass(1L), "123456");
     }
 
     @Test
     public void testCustom() {
-        assertEquals(userMapper.getUserCount(1100442339115012097L), 1);
+        assertEquals(userMapper.queryUserCount(1100442339115012097L), 1);
+    }
+
+
+    @Test
+    public void testQueryAuth() {
+        UserAuthTO userAuth = userMapper.queryUserAuth("最大长度为10个汉字");
     }
 
     @Test
@@ -43,7 +49,7 @@ public class UserMapperTest {
 
         User user = new User();
         Map<String, Object> map = Maps.newHashMap();
-        map.put("name", "tom");
+        map.put("username", "tom");
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
 //        wrapper.allEq(User::getAccount, map);
         List<User> users = userMapper.selectList(wrapper);

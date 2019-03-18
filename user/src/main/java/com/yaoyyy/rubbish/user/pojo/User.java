@@ -16,18 +16,18 @@ import java.util.Date;
 @TableName("rb_user")
 public class User {
 
-    @TableId(type = IdType.ID_WORKER)
+    @TableId(type = IdType.AUTO)
     private Long uid;
     private String username;
     private String email;
-    private String emailActiveStatus;
+    private Boolean emailActiveStatus;
     private String phoneNumber;
-    private String phoneNumberActiveStatus;
+    private Boolean phoneNumberActiveStatus;
     private String profilePhoto;
     private String account;
-    private String accountStatus;
+    private Boolean accountStatus;
     private String password;
-    private String userStatus;
+    private Boolean userStatus;
     private Date registDate;
     private Date lastOnlineDate;
     private Long userType;

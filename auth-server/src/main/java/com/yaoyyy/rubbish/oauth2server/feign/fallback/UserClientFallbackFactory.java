@@ -2,6 +2,9 @@ package com.yaoyyy.rubbish.oauth2server.feign.fallback;
 
 import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.oauth2server.feign.UserClient;
+import com.yaoyyy.rubbish.oauth2server.pojo.UserAuthTO;
+import feign.hystrix.FallbackFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,11 +35,25 @@ import org.springframework.stereotype.Component;
  *
  * @author yaoyy
  */
+@Slf4j
 @Component
-public class UserClientFallback implements UserClient {
+public class UserClientFallbackFactory implements FallbackFactory<UserClient> {
+
 
     @Override
-    public R<String> userPwd(Long uid) {
-        return R.ok("好的");
+    public UserClient create(Throwable cause) {
+        return new UserClient() {
+
+            @Override
+            public R<String> userPwd(Long uid) {
+                return R.ok("");
+            }
+
+            @Override
+            public R<UserAuthTO> userAuth(String username) {
+                log.warn(cause.getMessage());
+                return R.error("熔断");
+            }
+        };
     }
 }

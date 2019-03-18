@@ -1,7 +1,9 @@
 package com.yaoyyy.rubbish.oauth2server.service;
 
+import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.oauth2server.config.JwtTokenEnhancer;
 import com.yaoyyy.rubbish.oauth2server.feign.UserClient;
+import com.yaoyyy.rubbish.oauth2server.pojo.UserAuthTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -51,9 +53,17 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        jwtTokenEnhancer.getUid().set("guangtou");
-        userClient.userPwd(1L);
-        return new User(username, passwordEncoder.encode("admin"), AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ggg"));
+        // 获取用户认证信息
+        R<UserAuthTO> r = userClient.userAuth(username);
+        UserAuthTO userAuth = r.getData();
+        /**
+         * 线程变量保存uid，封装token时取出{@link JwtTokenEnhancer#enhance}
+         */
+        jwtTokenEnhancer.getUid().set(userAuth.getUid());
+
+        return new User(userAuth.getUsername(),
+                passwordEncoder.encode(userAuth.getPassword()),
+                AuthorityUtils.createAuthorityList(userAuth.getRoles().toArray(new String[0])));
     }
 
 }

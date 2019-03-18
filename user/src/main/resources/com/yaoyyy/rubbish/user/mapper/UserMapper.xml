@@ -1,13 +1,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yaoyyy.rubbish.user.mapper.UserMapper">
 
-    <!-- 可以将sql语句独立出来，然后引用 -->
-    <sql id="selectMap">
-        u.username, u.address ,c.campany_name
-    </sql>
-
+    <resultMap id="userAuth" type="com.yaoyyy.rubbish.user.pojo.UserAuthTO" autoMapping="true">
+        <id property="uid" column="uid" jdbcType="VARCHAR"/>
+        <collection property="roles" ofType="string" />
+    </resultMap>
+    
     <!-- 根据id查询用户 -->
-    <select id="getUserCount" resultType="int">
+    <select id="queryUserCount" resultType="int">
         SELECT
         count(1)
         FROM rb_user
@@ -15,7 +15,7 @@
         ORDER BY user ASC
     </select>
 
-    <select id="getUserPass" resultType="java.lang.String">
+    <select id="queryUserPass" resultType="java.lang.String">
         SELECT password
         FROM
             rb_user
@@ -24,5 +24,19 @@
         LIMIT 0, 1
     </select>
 
+    <select id="queryUserAuth" resultMap="userAuth">
+        SELECT
+            u.uid,
+            u.username,
+            u.password,
+            r.role
+        FROM
+            rb_user u,
+            rb_role r,
+            rb_user_role ur
+        WHERE
+            u.uid = ur.uid
+            AND ur.pk_role = r.pk_role
+    </select>
 
 </mapper>

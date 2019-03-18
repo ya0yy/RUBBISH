@@ -4,7 +4,9 @@ import com.yaoyyy.rubbish.user.exception.UidCanNotBeEmpty;
 import com.yaoyyy.rubbish.user.exception.UserNotFound;
 import com.yaoyyy.rubbish.user.mapper.UserMapper;
 import com.yaoyyy.rubbish.user.pojo.User;
+import com.yaoyyy.rubbish.user.pojo.UserAuthTO;
 import com.yaoyyy.rubbish.user.service.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +45,7 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Override
-    public User queryUserInfo(Long uid) {
+    public User getUserInfo(Long uid) {
 
         if (uidIsOk(uid)) throw new UidCanNotBeEmpty();
 
@@ -59,15 +61,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User queryUserInfo(Long uid, String username) {
+    public User getUserInfo(Long uid, String username) {
         // TODO: 2019/3/16 重载逻辑没写完
         return null;
     }
 
     @Override
-    public String queryUserPass(Long uid) {
+    public String getUserPass(Long uid) {
         if (uidIsOk(uid)) return "";
-        return userMapper.getUserPass(uid);
+        return userMapper.queryUserPass(uid);
+    }
+
+    @Override
+    public UserAuthTO getUserAuth(String username) {
+        return StringUtils.isNotBlank(username) ? userMapper.queryUserAuth(username) : new UserAuthTO();
     }
 
     /**
