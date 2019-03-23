@@ -11,3 +11,6 @@ eureka:
     fetch-registry: false
     service-url:
       defaultZone: http://127.0.0.1:9000/eureka
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 3000

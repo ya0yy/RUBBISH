@@ -33,6 +33,13 @@ import org.junit.Test;
 public class GeneralTest {
 
     @Test
+    public void test() {
+        String s = "abcd";
+        System.out.println(s.replace("a", ""));
+        System.out.println(s);
+    }
+
+    @Test
     public void testLongToInt() {
         long l = -21474836600L;
         int i = (int) l;

@@ -1,5 +1,7 @@
-package com.yaoyyy.rubbish.authserver.config;
+package com.yaoyyy.rubbish.authserver.security;
 
+import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
+import com.yaoyyy.rubbish.authserver.security.handler.AuthenticationFailureHandler;
 import com.yaoyyy.rubbish.authserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -51,6 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserService userService;
 
+    @Autowired
+    AuthenticationFailureHandler authenticationFailureHandler;
+
     /**
      * spring security规则
      */
@@ -63,6 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         permits.add("/test**");
 
         http.formLogin().loginPage(authServerProperties.getLoginPage())
+                // 登录失败处理器
+                .failureHandler(authenticationFailureHandler)
                 .and()
                 // 关闭session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
