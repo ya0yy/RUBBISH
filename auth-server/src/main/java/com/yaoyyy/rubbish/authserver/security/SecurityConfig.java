@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.util.List;
 
@@ -44,6 +45,7 @@ import java.util.List;
  *
  * @author yaoyang
  */
+// TODO: 2019/3/23 如果不要security，oauth是否能独立运作
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -55,6 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     AuthenticationFailureHandler authenticationFailureHandler;
+
+    @Autowired
+    AuthenticationSuccessHandler authenticationSuccessHandler;
 
     /**
      * spring security规则
@@ -68,8 +73,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         permits.add("/test**");
 
         http.formLogin().loginPage(authServerProperties.getLoginPage())
+                // TODO: 2019/3/27 处理器目前没用，因为现在是直接通过oauth2 password 认证的方式登录的
                 // 登录失败处理器
                 .failureHandler(authenticationFailureHandler)
+                // 登录成功处理器
+                .successHandler(authenticationSuccessHandler)
                 .and()
                 // 关闭session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)

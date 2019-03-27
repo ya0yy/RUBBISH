@@ -1,39 +1,23 @@
 package com.yaoyyy.rubbish.authserver.config;
 
 import com.yaoyyy.rubbish.authserver.service.UserService;
-import com.yaoyyy.rubbish.common.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
-import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.security.web.AuthenticationEntryPoint;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
@@ -84,7 +68,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients
                 .inMemory().withClient(authServerProperties.getClient())
                 .secret(new BCryptPasswordEncoder().encode(authServerProperties.getSecret()))
-                .authorizedGrantTypes("password", "refresh_token")
+                .authorizedGrantTypes("authorization_code", "password", "refresh_token")
                 .scopes(authServerProperties.getScope())
                 .accessTokenValiditySeconds(authServerProperties.getAccessTokenValiditySeconds())
         ;
@@ -110,16 +94,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 // password认证模式需要给端点加入authenticationManager，这里使用security生成的。
                 .authenticationManager(authenticationManager)
                 // 如果需要refresh_token认证则需要配置UserDetailService
-                .userDetailsService(userDetailsService)/*.exceptionTranslator(new WebResponseExceptionTranslator() {
-            @Override
-            public ResponseEntity translate(Exception e) throws Exception {
-                HttpHeaders headers = new HttpHeaders();
-                headers.set("Cache-Control", "no-store");
-                headers.set("Pragma", "no-cache");
-                ResponseEntity<R> response = new ResponseEntity<>(R.error("不行"), headers, HttpStatus.OK);
-                return response;
-            }
-        })*/
+                .userDetailsService(userDetailsService).exceptionTranslator(new OAuth2ExceptionTranslator())
 
         ;
     }
