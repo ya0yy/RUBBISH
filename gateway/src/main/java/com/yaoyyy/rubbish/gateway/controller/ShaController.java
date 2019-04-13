@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
  * rubbish-parent
  * 2019-03-01 08:39
  *
+ * 测试controller
+ *
  * @author yaoyang
  */
 @RestController

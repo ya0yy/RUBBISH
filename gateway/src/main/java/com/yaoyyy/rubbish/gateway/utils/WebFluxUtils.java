@@ -37,6 +37,14 @@ import reactor.core.publisher.Mono;
  */
 public class WebFluxUtils {
 
+    /**
+     * 2019/03/12
+     * 将R包装成视图
+     * @param exchange exchange 相当于mvc中的HttpServletResponse
+     * @param r 响应类
+     * @return reactor.core.publisher.Mono<java.lang.Void> webflux中的视图，相当于mvc中额ModelAndView
+     * @author YaoYY
+     */
     public static Mono<Void> createVoidMono(ServerWebExchange exchange, R r) {
         ServerHttpResponse response = exchange.getResponse();
         HttpHeaders httpHeaders = response.getHeaders();

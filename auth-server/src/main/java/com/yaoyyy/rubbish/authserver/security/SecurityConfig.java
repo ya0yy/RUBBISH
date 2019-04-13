@@ -69,10 +69,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 从配置文件中拿到放行路径并添加默认路径
         List<String> permits = authServerProperties.getPermits();
         permits.add("/");
+        permits.add("/oauth**");
         permits.add("/error**");
         permits.add("/test**");
 
-        http.formLogin().loginPage(authServerProperties.getLoginPage())
+        http.formLogin()//.loginPage(authServerProperties.getLoginPage())
                 // TODO: 2019/3/27 处理器目前没用，因为现在是直接通过oauth2 password 认证的方式登录的
                 // 登录失败处理器
                 .failureHandler(authenticationFailureHandler)

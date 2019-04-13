@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>AUTH-SERVER</h1>
+<html>
+<body><h1>OAuth Approval</h1>
+<p>Do you authorize "gateway" to access your protected resources?</p>
+<form id="confirmationForm" name="confirmationForm" action="/oauth/authorize" method="post"><input
+        name="user_oauth_approval" value="true" type="hidden"/>
+    <input type="hidden" name="_csrf"
+           value="de1d12de-0f3e-4917-a979-553b8646bea1"/>
+
+    <label><input name="authorize" value="Authorize" type="submit"/></label>
+</form>
+
+<form id="denialForm" name="denialForm" action="/oauth/authorize" method="post">
+    <input name="user_oauth_approval" value="false" type="hidden"/><input
+        type="hidden" name="_csrf" value="de1d12de-0f3e-4917-a979-553b8646bea1"/><label><input name="deny" value="Deny"
+                                                                                               type="submit"/></label>
+</form>
 </body>
 </html>

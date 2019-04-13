@@ -31,12 +31,11 @@
             u.password,
             r.role
         FROM
-            rb_user u,
-            rb_role r,
-            rb_user_role ur
+            rb_user u
+            LEFT JOIN rb_user_role ur ON u.uid = ur.uid
+            LEFT JOIN rb_role r ON ur.pk_role = r.pk_role
         WHERE
-            u.uid = ur.uid
-            AND ur.pk_role = r.pk_role
+            u.username = #{username, jdbcType=VARCHAR}
     </select>
 
 </mapper>

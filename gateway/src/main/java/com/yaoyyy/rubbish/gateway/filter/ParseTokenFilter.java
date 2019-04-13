@@ -52,6 +52,8 @@ import java.util.List;
  * <p>
  * rubbish-parent
  * 2019-03-06 22:19
+ *
+ * token解析过滤器
  * 此过滤器是从请求cookie中拿到token，并且将token解析成用户信息分发到下级路由
  *
  * @author yaoyang

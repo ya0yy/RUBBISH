@@ -36,6 +36,7 @@ import reactor.core.publisher.Mono;
  * rubbish-parent
  * 2019-03-05 23:48
  *
+ * 某些服务需要登录才能访问，此过滤器直接过滤掉未登录的请求
  * @author yaoyang
  */
 @Slf4j
