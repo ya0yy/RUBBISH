@@ -2,6 +2,9 @@ package com.yaoyyy.rubbish.user;
 
 import org.junit.Test;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
  * 　　　　　　　┏┛┻━━━┛┻┓ + +
@@ -31,6 +34,39 @@ import org.junit.Test;
  * @author yaoyang
  */
 public class GeneralTest {
+
+    static final Lock lock = new ReentrantLock();
+
+    public static void main(String[] args) {
+
+        new Thread() {
+            @Override
+            public void run() {
+                sleep1();
+            }
+        }.start();
+
+        sleep1();
+
+    }
+
+    private static void sleep1() {
+
+        boolean b = lock.tryLock();
+        System.err.println(Thread.currentThread().getName() + "上锁" + b);
+        if (!b) {
+            throw new RuntimeException("茅坑被别人占了");
+        }
+
+        try {
+            Thread.sleep(1000*10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        lock.unlock();
+        System.err.println(Thread.currentThread().getName() + "解锁");
+    }
 
     @Test
     public void test() {

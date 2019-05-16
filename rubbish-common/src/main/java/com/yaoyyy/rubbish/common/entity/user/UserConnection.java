@@ -1,4 +1,4 @@
-package com.yaoyyy.rubbish.user.pojo;
+package com.yaoyyy.rubbish.common.entity.user;
 
 import lombok.Data;
 

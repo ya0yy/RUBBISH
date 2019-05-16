@@ -3,8 +3,8 @@ package com.yaoyyy.rubbish.user.service.impl;
 import com.yaoyyy.rubbish.user.exception.UidCanNotBeEmpty;
 import com.yaoyyy.rubbish.user.exception.UserNotFound;
 import com.yaoyyy.rubbish.user.mapper.UserMapper;
-import com.yaoyyy.rubbish.user.pojo.User;
-import com.yaoyyy.rubbish.user.pojo.UserAuthTO;
+import com.yaoyyy.rubbish.common.entity.user.User;
+import com.yaoyyy.rubbish.common.entity.user.UserAuthTO;
 import com.yaoyyy.rubbish.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserInfo(Long uid) {
 
-        if (uidIsOk(uid)) throw new UidCanNotBeEmpty();
+        if (!uidIsOk(uid)) throw new UidCanNotBeEmpty();
 
         // 查询
         User user = userMapper.selectById(uid);

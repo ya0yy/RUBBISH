@@ -2,7 +2,7 @@ package com.yaoyyy.rubbish.authserver.feign.fallback;
 
 import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.authserver.feign.UserClient;
-import com.yaoyyy.rubbish.authserver.pojo.UserAuthTO;
+import com.yaoyyy.rubbish.common.entity.user.UserAuthTO;
 import feign.hystrix.FallbackFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

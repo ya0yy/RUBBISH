@@ -1,9 +1,9 @@
 package com.yaoyyy.rubbish.authserver.service;
 
-import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.authserver.config.JwtTokenEnhancer;
 import com.yaoyyy.rubbish.authserver.feign.UserClient;
-import com.yaoyyy.rubbish.authserver.pojo.UserAuthTO;
+import com.yaoyyy.rubbish.common.R;
+import com.yaoyyy.rubbish.common.entity.user.UserAuthTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;

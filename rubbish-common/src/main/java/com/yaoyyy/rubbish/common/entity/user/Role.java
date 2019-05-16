@@ -1,9 +1,8 @@
-package com.yaoyyy.rubbish.user.pojo;
+package com.yaoyyy.rubbish.common.entity.user;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 
-import java.util.List;
+import java.util.Date;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
@@ -29,17 +28,19 @@ import java.util.List;
  * 　　　　　　　　  ┗┻┛ ┗┻┛+ + + +
  * <p>
  * rubbish-parent
- * 2019-03-17 16:50
+ * 2019-03-17 20:52
  *
- * user认证信息传输类
+ * 角色实体
  *
  * @author yaoyy
  */
 @Data
-@Accessors(chain = true)
-public class UserAuthTO {
-    private String username;
-    private Long uid;
-    private String password;
-    private List<String> roles;
+public class Role {
+    private String pk;
+    private String role;
+
+    @Override
+    public String toString() {
+        return role;
+    }
 }

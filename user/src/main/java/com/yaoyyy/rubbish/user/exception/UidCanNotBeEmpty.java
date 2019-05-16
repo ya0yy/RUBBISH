@@ -1,6 +1,6 @@
 package com.yaoyyy.rubbish.user.exception;
 
-import com.yaoyyy.rubbish.user.pojo.User;
+import com.yaoyyy.rubbish.common.entity.user.User;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
