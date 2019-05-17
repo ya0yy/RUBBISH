@@ -81,11 +81,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(authenticationSuccessHandler)
                 .and()
                 // 关闭session
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
-                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
+//                .and()
                 .antMatcher("/**").authorizeRequests()
                 .antMatchers(permits.toArray(new String[0])).permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().authenticated().and().csrf().disable()
         ;
     }
 

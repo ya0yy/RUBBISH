@@ -77,7 +77,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .authorizedGrantTypes("authorization_code", "password", "refresh_token")
                 .scopes(authServerProperties.getScope())
                 .accessTokenValiditySeconds(authServerProperties.getAccessTokenValiditySeconds())
-        .redirectUris("http://localhost:8080");
+        .redirectUris("http://localhost:8080")
         ;
     }
 

@@ -13,9 +13,9 @@ spring:
   datasource:
     platform: mysql
     driver-class-name: net.sf.log4jdbc.DriverSpy
-    url: jdbc:log4jdbc:mysql://104.155.218.48:3306/rubbish-dev
-    username: root
-    password: admin
+    url: jdbc:log4jdbc:mysql://104.155.218.48:3306/rubbish_dev
+    username: rubbish
+    password: rubbish_admin
   application:
     name: user
 # 日志

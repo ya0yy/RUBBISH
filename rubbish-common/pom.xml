@@ -54,7 +54,7 @@
         <!-- mybatis plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <artifactId>mybatis-plus-annotation</artifactId>
             <version>3.1.0</version>
         </dependency>
 
