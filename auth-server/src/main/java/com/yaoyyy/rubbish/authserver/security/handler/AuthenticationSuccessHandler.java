@@ -5,26 +5,19 @@ import com.yaoyyy.rubbish.authserver.endpoint.AuthorizationCodeEndpoint;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.support.BindingAwareModelMap;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.bind.support.SimpleSessionStatus;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
@@ -78,7 +71,8 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         // 调用自定义的获取授权码的方法
         String code = getAuthorizeCode(authentication, request);
         log.info("用户 " + authentication.getName() + " 登陆成功，" + "授权码 " + code);
-        Principal userPrincipal = request.getUserPrincipal();
+
+        // 拼接认证地址
         String path = "/oauth/token?client_id=%s&scope=%s&grant_type=authorization_code&client_secret=%s&code=%s";
         path = String.format(path,
                 authServerProperties.getClient(),
@@ -86,13 +80,13 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
                 authServerProperties.getSecret(),
                 code);
 
+        // 写回
         response.setHeader("Content-Type", "text");
         response.getWriter().write(path);
     }
 
     private String getAuthorizeCode(Authentication authentication, HttpServletRequest request) {
 
-        SessionStatus sessionStatus = new SimpleSessionStatus();
         LinkedHashMap<String, String> parameters = new LinkedHashMap<>();
         // 从authentication中拿到PreAuthenticatedAuthenticationToke构造器所需要的参数
         PreAuthenticatedAuthenticationToken principal =
@@ -104,7 +98,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         parameters.put("client_id", authServerProperties.getClient());
         parameters.put("scope", authServerProperties.getScope());
 
-        return authorizationCodeEndpoint.authorize(new BindingAwareModelMap(), parameters, sessionStatus, principal);
+        return authorizationCodeEndpoint.authorize(new BindingAwareModelMap(), parameters, new SimpleSessionStatus(), principal);
     }
 
 }

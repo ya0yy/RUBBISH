@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.util.OAuth2Utils;
 import org.springframework.security.oauth2.provider.AuthorizationRequest;
 import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
-import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,7 +38,7 @@ import java.util.Map;
  * rubbish-parent
  * 2019-05-16 17:33
  *
- * 重写spring oauth自带的/oauth/authorize 流程，获取授权码
+ * 重写spring oauth自带的/oauth/authorize 流程，获取授权码，以字符串的形式返回
  * @author yaoyy
  */
 
@@ -54,7 +53,7 @@ public class AuthorizationCodeEndpoint {
     public String authorize(Map<String, Object> model, @RequestParam Map<String, String> parameters,
                                   SessionStatus sessionStatus, Principal principal) {
 
-        // 调用自带的authorize，获取视图
+        // 调用spring oauth自带的authorize，获取视图
         ModelAndView authorize = authorizationEndpoint.authorize(model, parameters, sessionStatus, principal);
         // 从视图中拿出我们需要修改的数据
         Map<String, Object> model1 = authorize.getModel();

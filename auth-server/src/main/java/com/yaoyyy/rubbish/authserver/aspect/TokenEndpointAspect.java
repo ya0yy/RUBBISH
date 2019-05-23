@@ -51,7 +51,7 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class TokenEndpointAspect {
 
-    public static final String dataPoint =
+    private static final String dataPoint =
             "execution(* org.springframework.security.oauth2.provider.endpoint.TokenEndpoint.postAccessToken(..))";
 
     /**

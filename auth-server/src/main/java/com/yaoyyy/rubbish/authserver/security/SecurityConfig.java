@@ -74,18 +74,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         permits.add("/test**");
 
         http.formLogin()//.loginPage(authServerProperties.getLoginPage())
-                // TODO: 2019/3/27 处理器目前没用，因为现在是直接通过oauth2 password 认证的方式登录的
                 // 登录失败处理器
                 .failureHandler(authenticationFailureHandler)
                 // 登录成功处理器
                 .successHandler(authenticationSuccessHandler)
                 .and()
                 // 关闭session
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
-//                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
+                .and()
                 .antMatcher("/**").authorizeRequests()
                 .antMatchers(permits.toArray(new String[0])).permitAll()
-                .anyRequest().authenticated().and().csrf().disable()
+                .anyRequest().authenticated()
+                .and()
+                .csrf().disable()
         ;
     }
 
