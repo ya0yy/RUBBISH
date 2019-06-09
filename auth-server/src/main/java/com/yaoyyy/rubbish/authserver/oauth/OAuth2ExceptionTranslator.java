@@ -1,4 +1,4 @@
-package com.yaoyyy.rubbish.authserver.config;
+package com.yaoyyy.rubbish.authserver.oauth;
 
 import com.yaoyyy.rubbish.common.R;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +50,7 @@ public class OAuth2ExceptionTranslator implements WebResponseExceptionTranslator
     private ThrowableAnalyzer throwableAnalyzer = new DefaultThrowableAnalyzer();
 
     @Override
-    public ResponseEntity translate(Exception e) throws Exception {
+    public ResponseEntity translate(Exception e) {
 
         //分析e
         Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);

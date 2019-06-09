@@ -1,8 +1,7 @@
 package com.yaoyyy.rubbish.authserver.service;
 
-import com.yaoyyy.rubbish.authserver.config.JwtTokenEnhancer;
+import com.yaoyyy.rubbish.authserver.oauth.JwtTokenEnhancer;
 import com.yaoyyy.rubbish.authserver.feign.UserClient;
-import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.common.entity.user.UserAuthTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -54,8 +53,10 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // 获取用户认证信息
-        R<UserAuthTO> r = userClient.userAuth(username);
-        UserAuthTO userAuth = r.getData();
+        UserAuthTO userAuth = userClient.userAuth(username).getData();
+        if (userAuth == null) {
+            throw new UsernameNotFoundException("用户不存在");
+        }
         /**
          * 线程变量保存uid，封装token时取出{@link JwtTokenEnhancer#enhance}
          */

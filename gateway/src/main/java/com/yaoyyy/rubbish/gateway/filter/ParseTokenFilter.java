@@ -70,6 +70,12 @@ public class ParseTokenFilter implements GlobalFilter, Ordered {
 
         ServerHttpRequest request = exchange.getRequest();
 
+        // 判断用户是否是登陆请求
+        if (StringUtils.pathEquals("/oauth/login", request.getPath().toString())) {
+
+            return chain.filter(exchange);
+        }
+
         // 从cookie获取token
         List<HttpCookie> rubbishes = request.getCookies().get("RUBBISH");
         if (rubbishes == null) {
@@ -111,8 +117,8 @@ public class ParseTokenFilter implements GlobalFilter, Ordered {
 
         // 获取jwt中包含的用户信息
         String user_name = (String) claims.get("user_name");
-        String uid = (String) claims.get("uid");
-        List authorities = claims.get("authorities", List.class);
+        Integer uid = (Integer) claims.get("uid");
+        List<?> authorities = claims.get("authorities", List.class);
 
         URI uri = request.getURI();
         StringBuilder query = new StringBuilder();
@@ -128,7 +134,9 @@ public class ParseTokenFilter implements GlobalFilter, Ordered {
         // TODO: 2019/3/12 优化时可把参数拼接代码段封装成方法，否则后期再添加参数又得再后面append
         // 参数拼接
         query.append("username").append("=").append(user_name).append("&").append("roles").append("=");
-        authorities.forEach(role -> query.append(role).append(","));
+        if (authorities != null) {
+            authorities.forEach(role -> query.append(role).append(","));
+        }
         // 删掉最后一个逗号
         query.deleteCharAt(query.length() - 1);
         query.append("&").append("uid=").append(uid);

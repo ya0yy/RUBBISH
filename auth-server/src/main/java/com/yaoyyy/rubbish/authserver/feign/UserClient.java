@@ -44,4 +44,7 @@ public interface UserClient {
 
     @RequestMapping(method = RequestMethod.GET, path = "/user_auth/{username}")
     R<UserAuthTO> userAuth(@PathVariable("username") String username);
+
+    @RequestMapping(method = RequestMethod.GET, path = "/user_info/{uid}")
+    R<UserAuthTO> userInfo(@PathVariable("uid") String uid);
 }

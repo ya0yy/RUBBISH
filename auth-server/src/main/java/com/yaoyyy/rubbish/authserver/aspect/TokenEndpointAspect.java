@@ -1,6 +1,7 @@
 package com.yaoyyy.rubbish.authserver.aspect;
 
-import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
+import com.yaoyyy.rubbish.authserver.oauth.AuthServerProperties;
+import com.yaoyyy.rubbish.common.R;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -74,11 +75,9 @@ public class TokenEndpointAspect {
         return getResponse(token);
     }
 
-    private ResponseEntity<OAuth2AccessToken> getResponse(OAuth2AccessToken accessToken) {
+    private ResponseEntity<R> getResponse(OAuth2AccessToken accessToken) {
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Cache-Control", "no-store");
-        headers.set("Pragma", "no-cache");
         headers.set("Content-Type", "application/json;charset=UTF-8");
 
         // 过期时间（秒）转换成GMT标准格式
@@ -98,6 +97,6 @@ public class TokenEndpointAspect {
         headers.set("Set-Cookie",cookieContent.toString());
         // 清空响应体里的信息
         accessToken.getAdditionalInformation().clear();
-        return new ResponseEntity<OAuth2AccessToken>(accessToken, headers, HttpStatus.OK);
+        return new ResponseEntity<>(R.ok(accessToken), headers, HttpStatus.OK);
     }
 }

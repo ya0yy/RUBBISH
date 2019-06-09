@@ -1,4 +1,4 @@
-package com.yaoyyy.rubbish.authserver.config;
+package com.yaoyyy.rubbish.authserver.oauth;
 
 import lombok.Getter;
 import lombok.Setter;

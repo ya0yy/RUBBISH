@@ -1,12 +1,14 @@
 package com.yaoyyy.rubbish.authserver.security;
 
-import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
+import com.yaoyyy.rubbish.authserver.oauth.AuthServerProperties;
 import com.yaoyyy.rubbish.authserver.security.handler.AuthenticationFailureHandler;
 import com.yaoyyy.rubbish.authserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -69,11 +71,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 从配置文件中拿到放行路径并添加默认路径
         List<String> permits = authServerProperties.getPermits();
         permits.add("/");
-        permits.add("/oauth**");
+        permits.add("/oauth/**");
         permits.add("/error**");
         permits.add("/test**");
+        AuthenticationManager sharedObject = http.getSharedObject(AuthenticationManager.class);
 
-        http.formLogin()//.loginPage(authServerProperties.getLoginPage())
+        http.formLogin().loginProcessingUrl("/oauth/login")//.loginPage(authServerProperties.getLoginPage())
                 // 登录失败处理器
                 .failureHandler(authenticationFailureHandler)
                 // 登录成功处理器
@@ -104,7 +107,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
+        // 将dao提供器的隐藏用户找不到异常设为false（亦可在UserService中直接抛出BadCaedentials异常）
+        ProviderManager pm = (ProviderManager) super.authenticationManager();
+        DaoAuthenticationProvider authenticationProvider = (DaoAuthenticationProvider) pm.getProviders().get(0);
+        authenticationProvider.setHideUserNotFoundExceptions(false);
+        return pm;
 
     }
 

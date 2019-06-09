@@ -1,6 +1,6 @@
 package com.yaoyyy.rubbish.authserver.security.handler;
 
-import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
+import com.yaoyyy.rubbish.authserver.oauth.AuthServerProperties;
 import com.yaoyyy.rubbish.authserver.endpoint.AuthorizationCodeEndpoint;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.support.BindingAwareModelMap;
 import org.springframework.web.bind.support.SimpleSessionStatus;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -52,29 +51,34 @@ import java.util.LinkedHashMap;
 @Component
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    @Autowired
+    AuthServerProperties authServerProperties;
+
+    // 认证端点
     @Lazy
     @Autowired
     AuthorizationCodeEndpoint authorizationCodeEndpoint;
 
-    @Autowired
-    AuthServerProperties authServerProperties;
-
+    // token获取端点
     @Lazy
     @Autowired
     TokenEndpoint tokenEndpoint;
 
+    private String getAuthorizeCodePathTemplate
+            = "/oauth/token?client_id=%s&scope=%s&grant_type=authorization_code&client_secret=%s&code=%s";
+
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException {
 
         // 调用自定义的获取授权码的方法
-        String code = getAuthorizeCode(authentication, request);
+        String code = getAuthorizeCode(authentication);
         log.info("用户 " + authentication.getName() + " 登陆成功，" + "授权码 " + code);
 
         // 拼接认证地址
-        String path = "/oauth/token?client_id=%s&scope=%s&grant_type=authorization_code&client_secret=%s&code=%s";
-        path = String.format(path,
+        String getAuthorizeCodePath = String.format(getAuthorizeCodePathTemplate,
                 authServerProperties.getClient(),
                 authServerProperties.getScope(),
                 authServerProperties.getSecret(),
@@ -82,10 +86,10 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
         // 写回
         response.setHeader("Content-Type", "text");
-        response.getWriter().write(path);
+        response.getWriter().write(getAuthorizeCodePath);
     }
 
-    private String getAuthorizeCode(Authentication authentication, HttpServletRequest request) {
+    private String getAuthorizeCode(Authentication authentication) {
 
         LinkedHashMap<String, String> parameters = new LinkedHashMap<>();
         // 从authentication中拿到PreAuthenticatedAuthenticationToke构造器所需要的参数

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 //@EnableHystrix
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = "com.yaoyyy.rubbish.authserver.feign")
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages= "com.yaoyyy")
 public class Oauth2ServerApplication {
 
     public static void main(String[] args) {

@@ -48,7 +48,7 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
      * @return java.util.Map<beanName,bean>
      * @author YaoYY
      */
-    public static Map<String, Object> getObjectFromContext(Class annotationClass) throws Exception {
+    public static Map<String, Object> getObjectFromContext(Class annotationClass) {
         Map<String, Object> map = new LinkedHashMap<>();
         // 获取ApplicationContext
         ApplicationContext applicationContext = SpringContextUtils.getApplicationContext();

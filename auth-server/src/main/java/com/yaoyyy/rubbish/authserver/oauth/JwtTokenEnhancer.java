@@ -1,4 +1,4 @@
-package com.yaoyyy.rubbish.authserver.config;
+package com.yaoyyy.rubbish.authserver.oauth;
 
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;

@@ -5,7 +5,9 @@ import com.yaoyyy.rubbish.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
@@ -57,6 +59,16 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
         logger.info(request.getParameter("username") + "@" + request.getParameter("password") + "登录失败");
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(objectMapper.writeValueAsString(R.error(exception.getMessage())));
+
+        if (exception instanceof UsernameNotFoundException) {
+            response.setStatus(HttpStatus.OK.value());
+            response.getWriter().write(objectMapper.writeValueAsString(R.error(exception.getMessage()).setCode(-81)));
+        }
+        if (exception instanceof BadCredentialsException) {
+            response.setStatus(HttpStatus.OK.value());
+            response.getWriter().write(objectMapper.writeValueAsString(R.error("用户名或密码错误").setCode(-82)));
+            response.getWriter().close();
+        }
+
     }
 }

@@ -71,7 +71,7 @@ public class GatewayConfig {
 
         final String ALLOWED_HEADERS = "*";
         final String ALLOWED_METHODS = "*";
-        final String ALLOWED_ORIGIN = "*";
+        final String ALLOWED_ORIGIN = "http://localhost:8080";
         final String ALLOWED_Expose = "*";
         final String MAX_AGE = "18000L";
 

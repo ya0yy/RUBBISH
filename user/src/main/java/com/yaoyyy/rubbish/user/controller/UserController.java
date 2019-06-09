@@ -3,6 +3,7 @@ package com.yaoyyy.rubbish.user.controller;
 import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.common.entity.user.User;
 import com.yaoyyy.rubbish.common.entity.user.UserAuthTO;
+import com.yaoyyy.rubbish.user.exception.UserNotFound;
 import com.yaoyyy.rubbish.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class UserController {
     @GetMapping("/user_auth/{username}")
     public R<UserAuthTO> userAuth(@PathVariable("username") String username) {
         UserAuthTO auth= userService.getUserAuth(username);
+        if (auth == null) {
+            throw new UserNotFound(new User());
+        }
         return R.ok(auth);
     }
 

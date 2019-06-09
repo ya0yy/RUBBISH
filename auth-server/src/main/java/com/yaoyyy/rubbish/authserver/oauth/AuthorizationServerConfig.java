@@ -1,4 +1,4 @@
-package com.yaoyyy.rubbish.authserver.config;
+package com.yaoyyy.rubbish.authserver.oauth;
 
 import com.yaoyyy.rubbish.authserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
