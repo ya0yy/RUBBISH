@@ -1,12 +1,12 @@
 package com.yaoyyy.rubbish.authserver.security.handler;
 
-import com.yaoyyy.rubbish.authserver.oauth.AuthServerProperties;
 import com.yaoyyy.rubbish.authserver.endpoint.AuthorizationCodeEndpoint;
+import com.yaoyyy.rubbish.authserver.oauth.AuthServerProperties;
+import com.yaoyyy.rubbish.authserver.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
@@ -59,19 +59,20 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
     @Autowired
     AuthorizationCodeEndpoint authorizationCodeEndpoint;
 
-    // token获取端点
-    @Lazy
     @Autowired
-    TokenEndpoint tokenEndpoint;
+    UserService userService;
 
     private String getAuthorizeCodePathTemplate
-            = "/oauth/token?client_id=%s&scope=%s&grant_type=authorization_code&client_secret=%s&code=%s";
+            = "/oauth/token?client_id=%s&scope=%s&grant_type=authorization_code&client_secret=%s&code=%s&uid=%s";
 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException {
+
+        // 获取uid
+        Long uid = userService.getUid();
 
         // 调用自定义的获取授权码的方法
         String code = getAuthorizeCode(authentication);
@@ -82,7 +83,8 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
                 authServerProperties.getClient(),
                 authServerProperties.getScope(),
                 authServerProperties.getSecret(),
-                code);
+                code,
+                uid);
 
         // 写回
         response.setHeader("Content-Type", "text");

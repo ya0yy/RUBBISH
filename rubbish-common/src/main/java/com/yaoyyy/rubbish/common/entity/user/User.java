@@ -28,8 +28,8 @@ public class User {
     private Boolean accountStatus;
     private String password;
     private Boolean userStatus;
-    private Date registDate;
-    private Date lastOnlineDate;
+    private Date registTime;
+    private Date lastOnlineTime;
     private Long userType;
 
 }

@@ -47,8 +47,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserClient userClient;
 
-    @Autowired
-    private JwtTokenEnhancer jwtTokenEnhancer;
+    private ThreadLocal<Long> uid = new ThreadLocal<>();
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -57,14 +56,15 @@ public class UserService implements UserDetailsService {
         if (userAuth == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
-        /**
-         * 线程变量保存uid，封装token时取出{@link JwtTokenEnhancer#enhance}
-         */
-        jwtTokenEnhancer.getUid().set(userAuth.getUid());
+
+        this.uid.set(userAuth.getUid());
 
         return new User(userAuth.getUsername(),
                 passwordEncoder.encode(userAuth.getPassword()),
                 AuthorityUtils.createAuthorityList(userAuth.getRoles().toArray(new String[0])));
     }
 
+    public Long getUid() {
+        return uid.get();
+    }
 }

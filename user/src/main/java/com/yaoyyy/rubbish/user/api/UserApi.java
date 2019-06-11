@@ -1,4 +1,4 @@
-package com.yaoyyy.rubbish.user.controller;
+package com.yaoyyy.rubbish.user.api;
 
 import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.common.entity.user.User;
@@ -18,7 +18,7 @@ import java.util.Map;
  * @author YaoYY
  */
 @RestController
-public class UserController {
+public class UserApi {
 
     @Autowired
     private UserService userService;

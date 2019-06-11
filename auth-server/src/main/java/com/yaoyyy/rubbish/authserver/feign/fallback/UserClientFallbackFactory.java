@@ -2,6 +2,7 @@ package com.yaoyyy.rubbish.authserver.feign.fallback;
 
 import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.authserver.feign.UserClient;
+import com.yaoyyy.rubbish.common.entity.user.User;
 import com.yaoyyy.rubbish.common.entity.user.UserAuthTO;
 import feign.hystrix.FallbackFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +54,11 @@ public class UserClientFallbackFactory implements FallbackFactory<UserClient> {
             public R<UserAuthTO> userAuth(String username) {
                 log.warn(cause.getMessage());
                 return R.error("熔断");
+            }
+
+            @Override
+            public R<User> userInfo(Long uid) {
+                return null;
             }
         };
     }

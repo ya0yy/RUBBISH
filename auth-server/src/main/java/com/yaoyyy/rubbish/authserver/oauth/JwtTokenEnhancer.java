@@ -40,20 +40,16 @@ import java.util.Map;
 @Component
 public class JwtTokenEnhancer implements TokenEnhancer {
 
-    private final ThreadLocal<Long> uid = new ThreadLocal<>();
-
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+
         Map<String, Object> info = new HashMap<>();
-        // 从线程变量中拿到本次登录请求的uid
-        Long uid = this.uid.get();
-        info.put("uid", uid);
+        // 从请求中拿到uid
+        String uid = authentication.getOAuth2Request().getRequestParameters().get("uid");
+
         // 将info写入到token中，注意：此时token还是普通token，在下一个TokenEnhancer中才会转换为jwt
+        info.put("uid", uid);
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(info);
         return accessToken;
-    }
-
-    public ThreadLocal<Long> getUid() {
-        return uid;
     }
 }

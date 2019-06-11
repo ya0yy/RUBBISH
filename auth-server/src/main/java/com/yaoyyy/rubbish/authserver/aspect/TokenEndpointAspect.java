@@ -1,7 +1,9 @@
 package com.yaoyyy.rubbish.authserver.aspect;
 
+import com.yaoyyy.rubbish.authserver.feign.UserClient;
 import com.yaoyyy.rubbish.authserver.oauth.AuthServerProperties;
 import com.yaoyyy.rubbish.common.R;
+import com.yaoyyy.rubbish.common.entity.user.User;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
@@ -61,6 +64,9 @@ public class TokenEndpointAspect {
     @Autowired
     AuthServerProperties authServerProperties;
 
+    @Autowired
+    UserClient userClient;
+
     @Pointcut(dataPoint)
     public void pointcut() {}
 
@@ -69,13 +75,22 @@ public class TokenEndpointAspect {
         ResponseEntity<OAuth2AccessToken> response = (ResponseEntity<OAuth2AccessToken>) point.proceed();
         // 拿到token
         OAuth2AccessToken token = response.getBody();
-        if (token == null || StringUtils.isBlank(token.getValue())) {
+
+        // 拿到uid
+        Map<String, String> params = (Map) point.getArgs()[1];
+        String uid = params.get("uid");
+
+        if (StringUtils.isBlank(uid) || token == null || StringUtils.isBlank(token.getValue())) {
             return response;
         }
-        return getResponse(token);
+
+        // 获取user信息
+        R<User> r = userClient.userInfo(Long.valueOf(uid));
+
+        return getResponse(token, r.getData());
     }
 
-    private ResponseEntity<R> getResponse(OAuth2AccessToken accessToken) {
+    private ResponseEntity<R> getResponse(OAuth2AccessToken accessToken, User user) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json;charset=UTF-8");
@@ -97,6 +112,7 @@ public class TokenEndpointAspect {
         headers.set("Set-Cookie",cookieContent.toString());
         // 清空响应体里的信息
         accessToken.getAdditionalInformation().clear();
-        return new ResponseEntity<>(R.ok(accessToken), headers, HttpStatus.OK);
+
+        return new ResponseEntity<>(R.ok(user), headers, HttpStatus.OK);
     }
 }

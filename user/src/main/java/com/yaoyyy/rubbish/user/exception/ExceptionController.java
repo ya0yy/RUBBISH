@@ -1,7 +1,6 @@
-package com.yaoyyy.rubbish.user.controller;
+package com.yaoyyy.rubbish.user.exception;
 
 import com.yaoyyy.rubbish.common.R;
-import com.yaoyyy.rubbish.user.exception.UserNotFound;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
