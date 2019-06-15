@@ -1,6 +1,6 @@
 package com.yaoyyy.rubbish.authserver.security;
 
-import com.yaoyyy.rubbish.authserver.oauth.AuthServerProperties;
+import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
 import com.yaoyyy.rubbish.authserver.security.handler.AuthenticationFailureHandler;
 import com.yaoyyy.rubbish.authserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +107,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
-        // 将dao提供器的隐藏用户找不到异常设为false（亦可在UserService中直接抛出BadCaedentials异常）
+        // 将dao提供器的隐藏用户找不到异常设为false（亦可在UserService中直接抛出BadCaedentials异常, 然后错误处理器中判断）
         ProviderManager pm = (ProviderManager) super.authenticationManager();
         DaoAuthenticationProvider authenticationProvider = (DaoAuthenticationProvider) pm.getProviders().get(0);
         authenticationProvider.setHideUserNotFoundExceptions(false);

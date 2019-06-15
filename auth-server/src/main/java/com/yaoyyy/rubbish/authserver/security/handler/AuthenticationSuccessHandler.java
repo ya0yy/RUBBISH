@@ -1,7 +1,7 @@
 package com.yaoyyy.rubbish.authserver.security.handler;
 
 import com.yaoyyy.rubbish.authserver.endpoint.AuthorizationCodeEndpoint;
-import com.yaoyyy.rubbish.authserver.oauth.AuthServerProperties;
+import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
 import com.yaoyyy.rubbish.authserver.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

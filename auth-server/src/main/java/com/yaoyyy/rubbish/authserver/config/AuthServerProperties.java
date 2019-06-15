@@ -1,4 +1,4 @@
-package com.yaoyyy.rubbish.authserver.oauth;
+package com.yaoyyy.rubbish.authserver.config;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -49,11 +49,15 @@ public class AuthServerProperties {
     /**
      * cookie过期时间（秒）
      */
-    private Integer tokenCookieExpireSeconds = 1000;
+    private Integer tokenCookieExpireSeconds = 60 * 60 * 10;
     /**
      * cookie路径
      */
     private String tokenCookiePath = "/";
+    /**
+     * cookie domain
+     */
+    private String tokenCookieDomain = "http://localhost:10001";
     /**
      * jwt签名
      */
@@ -73,7 +77,11 @@ public class AuthServerProperties {
     /**
      * token过期时间（秒）默认12小时
      */
-    private Integer accessTokenValiditySeconds = 60 * 60 * 12;
+    private Integer accessTokenValiditySeconds = 60 * 60 * 8; // default 12 hours.
+    /**
+     * 刷新码过期时间
+     */
+    private Integer refreshTokenValiditySeconds = 60 * 60 * 24 * 30; // default 30 days.
     /**
      * 未登录时跳转路径
      */

@@ -71,7 +71,8 @@ public class ParseTokenFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
 
         // 判断用户是否是登陆请求
-        if (StringUtils.pathEquals("/oauth/login", request.getPath().toString())) {
+        if (StringUtils.pathEquals("/oauth/login", request.getPath().toString())
+                || StringUtils.pathEquals("/oauth/token", request.getPath().toString())) {
 
             return chain.filter(exchange);
         }
@@ -91,17 +92,24 @@ public class ParseTokenFilter implements GlobalFilter, Ordered {
         } catch (UnsupportedEncodingException e) {
             // getBytes("utf-8)抛的异常
             e.printStackTrace();
+            return chain.filter(exchange);
         } catch (SignatureException e) {
             log.warn("jwt被修改，签名不正确！用户名");
             return chain.filter(exchange);
         } catch (ExpiredJwtException e) {
             // token过期
-            return WebFluxUtils.createVoidMono(exchange, R.error("登录失效"));
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            return WebFluxUtils.createVoidMono(exchange, R.error(-401, "登录失效"));
         }
+
+        // 获取jwt中包含的用户信息
+        String user_name = (String) claims.get("user_name");
+        Long uid = Long.valueOf((String) claims.get("uid"));
+        List<?> authorities = claims.get("authorities", List.class);
 
         // 判断过期时间
         Date exp = claims.get("exp", Date.class);
-        if (exp.getTime() - System.currentTimeMillis() < 1000 * 60 * 10) {
+        if (exp.getTime() - System.currentTimeMillis() < 1000 * 60 * 60) {
             HttpHeaders requestHeaders = new HttpHeaders();
             requestHeaders.add("Authorization", "Basic Z2F0ZXdheTphZG1pbg==");
             // 认证参数
@@ -110,15 +118,10 @@ public class ParseTokenFilter implements GlobalFilter, Ordered {
             requestBody.add("grant_type", "refresh_token");
 // TODO: 2019/3/14 参数值提取到配置文件
             HttpEntity<MultiValueMap> entity = new HttpEntity<>(requestBody, requestHeaders);
-            ResponseEntity<String> responseEntity = restTemplate.exchange("http://AUTH-SERVER/oauth/token", HttpMethod.POST, entity, String.class);
+            ResponseEntity<String> responseEntity = restTemplate.exchange("http://AUTH-SERVER/oauth/token?uid=" + uid, HttpMethod.POST, entity, String.class);
             List<String> list = responseEntity.getHeaders().get("Set-Cookie");
             exchange.getResponse().getHeaders().put("Set-Cookie", list);
         }
-
-        // 获取jwt中包含的用户信息
-        String user_name = (String) claims.get("user_name");
-        Integer uid = (Integer) claims.get("uid");
-        List<?> authorities = claims.get("authorities", List.class);
 
         URI uri = request.getURI();
         StringBuilder query = new StringBuilder();

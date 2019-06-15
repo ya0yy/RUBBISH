@@ -61,7 +61,7 @@ public class OAuth2ExceptionTranslator implements WebResponseExceptionTranslator
         // 身份认证失败
         Exception ase = (OAuth2Exception) throwableAnalyzer.getFirstThrowableOfType(OAuth2Exception.class, causeChain);
         if (ase != null) {
-            return handleOAuth2Exception(R.error(401, "用户名或密码错误"));
+            return handleOAuth2Exception(R.error(401, "OAuth认证出错"));
         }
 
         // 身份认证异常

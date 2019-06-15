@@ -7,7 +7,8 @@ eureka:
   instance:
     appname: gateway
     prefer-ip-address: true
-    hostname: gateway_host
+    instance-id: gateway_a
+#    hostname: gateway_host
 spring:
   cloud:
     gateway:

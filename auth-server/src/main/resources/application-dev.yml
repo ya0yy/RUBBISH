@@ -16,4 +16,4 @@ logging:
   level:
     root: debug
 auth-server:
-  access-token-validity-seconds: 10000
+  access-token-validity-seconds: 3600

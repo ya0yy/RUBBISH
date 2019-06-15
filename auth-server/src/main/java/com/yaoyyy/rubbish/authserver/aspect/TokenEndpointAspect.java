@@ -1,7 +1,7 @@
 package com.yaoyyy.rubbish.authserver.aspect;
 
 import com.yaoyyy.rubbish.authserver.feign.UserClient;
-import com.yaoyyy.rubbish.authserver.oauth.AuthServerProperties;
+import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
 import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.common.entity.user.User;
 import org.apache.commons.lang.StringUtils;
@@ -80,7 +80,7 @@ public class TokenEndpointAspect {
         Map<String, String> params = (Map) point.getArgs()[1];
         String uid = params.get("uid");
 
-        if (StringUtils.isBlank(uid) || token == null || StringUtils.isBlank(token.getValue())) {
+        if (StringUtils.isBlank(uid)) {
             return response;
         }
 
@@ -106,7 +106,9 @@ public class TokenEndpointAspect {
                 .append("=").append(accessToken.getValue())
                 .append("RUBBISH=").append(accessToken.getRefreshToken())
                 .append(";expires=").append(expireTime)
-                .append(";path=").append(authServerProperties.getTokenCookiePath());
+                .append(";path=").append(authServerProperties.getTokenCookiePath())
+//                .append(";domain=").append(authServerProperties.getTokenCookieDomain())
+        ;
 
         // 设置cookie过期时间
         headers.set("Set-Cookie",cookieContent.toString());

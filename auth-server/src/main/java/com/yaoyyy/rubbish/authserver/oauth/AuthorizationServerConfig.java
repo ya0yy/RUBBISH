@@ -1,5 +1,6 @@
 package com.yaoyyy.rubbish.authserver.oauth;
 
+import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
 import com.yaoyyy.rubbish.authserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -65,7 +66,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private UserService userDetailsService;
 
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer security) {
         security.allowFormAuthenticationForClients();
     }
 
@@ -77,12 +78,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .authorizedGrantTypes("authorization_code", "password", "refresh_token")
                 .scopes(authServerProperties.getScope())
                 .accessTokenValiditySeconds(authServerProperties.getAccessTokenValiditySeconds())
-        .redirectUris("http://localhost:8080")
+                .refreshTokenValiditySeconds(authServerProperties.getRefreshTokenValiditySeconds())
+                .redirectUris("http://example.com")
         ;
     }
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         // new一个token增强器链，由于默认的已在DefaultTokenServices里写死，这里用到两个增强器。
         TokenEnhancerChain chain = new TokenEnhancerChain();
         List<TokenEnhancer> enhancers = new ArrayList<>();
@@ -101,7 +103,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 // password认证模式需要给端点加入authenticationManager，这里使用security生成的。
                 .authenticationManager(authenticationManager)
                 // 如果需要refresh_token认证则需要配置UserDetailService
-                .userDetailsService(userDetailsService).exceptionTranslator(new OAuth2ExceptionTranslator())
+                .userDetailsService(userDetailsService)
+                // 加入自定义的异常处理器
+                .exceptionTranslator(new OAuth2ExceptionTranslator())
 
         ;
     }

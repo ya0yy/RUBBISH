@@ -56,19 +56,21 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
+
         logger.info(request.getParameter("username") + "@" + request.getParameter("password") + "登录失败");
+
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.setContentType("application/json;charset=UTF-8");
 
         if (exception instanceof UsernameNotFoundException) {
-            response.setStatus(HttpStatus.OK.value());
-            response.getWriter().write(objectMapper.writeValueAsString(R.error(exception.getMessage()).setCode(-81)));
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.getWriter().write(objectMapper.writeValueAsString(R.error(exception.getMessage())));
         }
         if (exception instanceof BadCredentialsException) {
-            response.setStatus(HttpStatus.OK.value());
-            response.getWriter().write(objectMapper.writeValueAsString(R.error("用户名或密码错误").setCode(-82)));
-            response.getWriter().close();
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.getWriter().write(objectMapper.writeValueAsString(R.error("用户名或密码错误")));
         }
 
+        response.getWriter().close();
     }
 }
