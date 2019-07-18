@@ -1,13 +1,14 @@
 package com.yaoyyy.rubbish.user.service.impl;
 
+import com.yaoyyy.rubbish.common.model.user.User;
+import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
 import com.yaoyyy.rubbish.user.exception.UidCanNotBeEmpty;
 import com.yaoyyy.rubbish.user.exception.UserNotFound;
 import com.yaoyyy.rubbish.user.mapper.UserMapper;
-import com.yaoyyy.rubbish.common.entity.user.User;
-import com.yaoyyy.rubbish.common.entity.user.UserAuthTO;
 import com.yaoyyy.rubbish.user.service.UserService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,10 +39,11 @@ import org.springframework.stereotype.Service;
  *
  * @author yaoyang
  */
+@AllArgsConstructor
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     UserMapper userMapper;
 
     @Override

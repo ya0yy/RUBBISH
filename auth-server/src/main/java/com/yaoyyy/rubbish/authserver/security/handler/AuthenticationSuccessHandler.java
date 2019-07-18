@@ -1,10 +1,10 @@
 package com.yaoyyy.rubbish.authserver.security.handler;
 
-import com.yaoyyy.rubbish.authserver.endpoint.AuthorizationCodeEndpoint;
 import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
+import com.yaoyyy.rubbish.authserver.endpoint.AuthorizationCodeEndpoint;
 import com.yaoyyy.rubbish.authserver.service.UserService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -47,19 +47,17 @@ import java.util.LinkedHashMap;
  *
  * @author yaoyy
  */
+@AllArgsConstructor
 @Slf4j
 @Component
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Autowired
     AuthServerProperties authServerProperties;
 
     // 认证端点
     @Lazy
-    @Autowired
     AuthorizationCodeEndpoint authorizationCodeEndpoint;
 
-    @Autowired
     UserService userService;
 
     private String getAuthorizeCodePathTemplate

@@ -1,6 +1,6 @@
 package com.yaoyyy.rubbish.authserver.endpoint;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.oauth2.common.util.OAuth2Utils;
 import org.springframework.security.oauth2.provider.AuthorizationRequest;
 import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
@@ -42,11 +42,11 @@ import java.util.Map;
  * @author yaoyy
  */
 
+@AllArgsConstructor
 @RestController
 @SessionAttributes("authorizationRequest")
 public class AuthorizationCodeEndpoint {
 
-    @Autowired
     AuthorizationEndpoint authorizationEndpoint;
 
     @RequestMapping(value = "/oauth/authorize", method = RequestMethod.GET)

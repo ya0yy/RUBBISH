@@ -1,5 +1,6 @@
 package com.yaoyyy.rubbish.gateway.filter;
 
+import com.yaoyyy.rubbish.common.CodeEnum;
 import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.gateway.utils.WebFluxUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,7 @@ public class AuthlGlobalFilter implements GlobalFilter {
 
         return cookies.containsKey("RUBBISH")
                 ? chain.filter(exchange)
-                : WebFluxUtils.createVoidMono(exchange, R.error(-2, "未登录"));
+                : WebFluxUtils.createVoidMono(exchange, R.error(CodeEnum.REQUIRE_LOGIN));
     }
 
 }

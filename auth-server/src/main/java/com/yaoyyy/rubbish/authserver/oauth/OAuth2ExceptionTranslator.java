@@ -1,5 +1,6 @@
 package com.yaoyyy.rubbish.authserver.oauth;
 
+import com.yaoyyy.rubbish.common.CodeEnum;
 import com.yaoyyy.rubbish.common.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,9 @@ import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.web.util.ThrowableAnalyzer;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
@@ -45,23 +49,24 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
  * @author yaoyy
  */
 @Slf4j
-public class OAuth2ExceptionTranslator implements WebResponseExceptionTranslator {
+public class OAuth2ExceptionTranslator<T> implements WebResponseExceptionTranslator<T> {
 
     private ThrowableAnalyzer throwableAnalyzer = new DefaultThrowableAnalyzer();
 
+    // TODO: 2019/7/17 此处黄色警告线！
     @Override
     public ResponseEntity translate(Exception e) {
 
         //分析e
         Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);
 
-        log.error(causeChain.toString());
+        log.error(Arrays.stream(causeChain).collect(Collectors.toList()).toString());
         log.error(e.toString());
 
         // 身份认证失败
         Exception ase = (OAuth2Exception) throwableAnalyzer.getFirstThrowableOfType(OAuth2Exception.class, causeChain);
         if (ase != null) {
-            return handleOAuth2Exception(R.error(401, "OAuth认证出错"));
+            return handleOAuth2Exception(R.error(CodeEnum.AUTH_FAIL));
         }
 
         // 身份认证异常
@@ -89,15 +94,11 @@ public class OAuth2ExceptionTranslator implements WebResponseExceptionTranslator
 
     private ResponseEntity<R> handleOAuth2Exception(R r) {
 
-        int status = r.getCode();
+        int status = r.getCode().getCode();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Cache-Control", "no-store");
         headers.set("Pragma", "no-cache");
 
-        ResponseEntity<R> response = new ResponseEntity<>(r, headers,
-                HttpStatus.valueOf(status));
-
-        return response;
-
+        return new ResponseEntity<>(r, headers, HttpStatus.valueOf(status));
     }
 }

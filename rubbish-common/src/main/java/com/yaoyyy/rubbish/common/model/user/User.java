@@ -1,4 +1,4 @@
-package com.yaoyyy.rubbish.common.entity.user;
+package com.yaoyyy.rubbish.common.model.user;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

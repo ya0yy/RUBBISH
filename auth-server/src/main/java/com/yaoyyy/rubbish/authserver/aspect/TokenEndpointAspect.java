@@ -1,15 +1,14 @@
 package com.yaoyyy.rubbish.authserver.aspect;
 
-import com.yaoyyy.rubbish.authserver.feign.UserClient;
 import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
+import com.yaoyyy.rubbish.authserver.feign.UserClient;
 import com.yaoyyy.rubbish.common.R;
-import com.yaoyyy.rubbish.common.entity.user.User;
+import com.yaoyyy.rubbish.common.model.user.User;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +50,7 @@ import java.util.Map;
  *
  * @author yaoyang
  */
+@AllArgsConstructor
 @Aspect
 @Component
 public class TokenEndpointAspect {
@@ -61,24 +61,23 @@ public class TokenEndpointAspect {
     /**
      * 配置属性类
      */
-    @Autowired
     AuthServerProperties authServerProperties;
 
-    @Autowired
     UserClient userClient;
-
-    @Pointcut(dataPoint)
-    public void pointcut() {}
 
     @Around(dataPoint)
     public Object replaceResult(ProceedingJoinPoint point) throws Throwable {
-        ResponseEntity<OAuth2AccessToken> response = (ResponseEntity<OAuth2AccessToken>) point.proceed();
+        ResponseEntity response = (ResponseEntity) point.proceed();
         // 拿到token
-        OAuth2AccessToken token = response.getBody();
+        OAuth2AccessToken token = (OAuth2AccessToken) response.getBody();
+
+        if (token == null) {
+            throw new RuntimeException();
+        }
 
         // 拿到uid
-        Map<String, String> params = (Map) point.getArgs()[1];
-        String uid = params.get("uid");
+        Map params = (Map) point.getArgs()[1];
+        String uid = (String) params.get("uid");
 
         if (StringUtils.isBlank(uid)) {
             return response;
@@ -101,17 +100,15 @@ public class TokenEndpointAspect {
                 .format(DateTimeFormatter.RFC_1123_DATE_TIME);
 
         // 拼接cookie内容
-        StringBuilder cookieContent = new StringBuilder();
-        cookieContent.append(authServerProperties.getTokenCookieName())
-                .append("=").append(accessToken.getValue())
-                .append("RUBBISH=").append(accessToken.getRefreshToken())
-                .append(";expires=").append(expireTime)
-                .append(";path=").append(authServerProperties.getTokenCookiePath())
-//                .append(";domain=").append(authServerProperties.getTokenCookieDomain())
-        ;
+        String cookieContent = authServerProperties.getTokenCookieName() +
+                "=" + accessToken.getValue() +
+                "RUBBISH=" + accessToken.getRefreshToken() +
+                ";expires=" + expireTime +
+                ";path=" + authServerProperties.getTokenCookiePath();
+            // append(";domain=").append(authServerProperties.getTokenCookieDomain())
 
         // 设置cookie过期时间
-        headers.set("Set-Cookie",cookieContent.toString());
+        headers.set("Set-Cookie", cookieContent);
         // 清空响应体里的信息
         accessToken.getAdditionalInformation().clear();
 

@@ -2,8 +2,8 @@ package com.yaoyyy.rubbish.authserver.feign;
 
 import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.authserver.feign.fallback.UserClientFallbackFactory;
-import com.yaoyyy.rubbish.common.entity.user.User;
-import com.yaoyyy.rubbish.common.entity.user.UserAuthTO;
+import com.yaoyyy.rubbish.common.model.user.User;
+import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -39,6 +39,6 @@ public class ShaController {
 
     @RequestMapping("/not_login")
     public R notLogin() {
-        return R.error(-2);
+        return R.error();
     }
 }

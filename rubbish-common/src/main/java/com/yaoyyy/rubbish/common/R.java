@@ -21,7 +21,7 @@ public class R<T> {
     /**
      * 响应码
      */
-    private Integer code;
+    private CodeEnum code;
 
     /**
      * 状态（成功/失败）
@@ -47,24 +47,24 @@ public class R<T> {
     /**
      * 一些构造器！！！
      */
-    public R(Integer code, Boolean status) {
+    public R(CodeEnum code, Boolean status) {
         this.code = code;
         this.status = status;
     }
 
-    public R(Integer code, Boolean status, String msg) {
+    public R(CodeEnum code, Boolean status, String msg) {
         this.code = code;
         this.status = status;
         this.msg = msg;
     }
 
-    public R(Integer code, Boolean status, T data) {
+    public R(CodeEnum code, Boolean status, T data) {
         this.code = code;
         this.status = status;
         this.data = data;
     }
 
-    public R(Integer code, Boolean status, String msg, T data) {
+    public R(CodeEnum code, Boolean status, String msg, T data) {
         this.code = code;
         this.status = status;
         this.msg = msg;
@@ -75,27 +75,31 @@ public class R<T> {
      * 静态方法
      */
     public static R ok() {
-        return new R(1, true);
+        return new R(CodeEnum.SUCCESS, true);
     }
 
     public static <T> R<T> ok(T t) {
-        return new R<T>(1, true, t);
+        return new R<>(CodeEnum.SUCCESS, true, t);
     }
 
     public static <T> R<T> ok(String msg, T t) {
-        return new R<T>(1, true, msg, t);
+        return new R<>(CodeEnum.SUCCESS, true, msg, t);
     }
 
-    public static R error(Integer code) {
-        return new R(code, false);
+    public static <T> R<T> error() {
+        return R.error(CodeEnum.ERROR);
     }
 
-    public static R error(Integer code, String msg) {
+    public static <T> R<T> error(CodeEnum code) {
+        return new R<T>(code, false).setMsg(code.getMsg());
+    }
+
+    public static R error(CodeEnum code, String msg) {
         return new R(code, false, msg);
     }
 
     public static R error(String msg) {
-        return new R(-1, false, msg);
+        return new R(CodeEnum.ERROR, false, msg);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.yaoyyy.rubbish.user.service;
 
-import com.yaoyyy.rubbish.common.entity.user.User;
-import com.yaoyyy.rubbish.common.entity.user.UserAuthTO;
+import com.yaoyyy.rubbish.common.model.user.User;
+import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +

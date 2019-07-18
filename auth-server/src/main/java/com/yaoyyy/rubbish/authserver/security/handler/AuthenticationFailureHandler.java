@@ -1,9 +1,10 @@
 package com.yaoyyy.rubbish.authserver.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yaoyyy.rubbish.common.CodeEnum;
 import com.yaoyyy.rubbish.common.R;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
@@ -45,11 +46,11 @@ import java.io.IOException;
  *
  * @author yaoyy
  */
+@AllArgsConstructor
 @Slf4j
 @Component
 public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-    @Autowired
     ObjectMapper objectMapper;
 
     @Override
@@ -68,7 +69,7 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
         }
         if (exception instanceof BadCredentialsException) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.getWriter().write(objectMapper.writeValueAsString(R.error("用户名或密码错误")));
+            response.getWriter().write(objectMapper.writeValueAsString(R.error(CodeEnum.AUTH_FAIL, "用户名或密码错误")));
         }
 
         response.getWriter().close();

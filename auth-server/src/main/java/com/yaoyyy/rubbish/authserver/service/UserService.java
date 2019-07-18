@@ -1,9 +1,8 @@
 package com.yaoyyy.rubbish.authserver.service;
 
-import com.yaoyyy.rubbish.authserver.oauth.JwtTokenEnhancer;
 import com.yaoyyy.rubbish.authserver.feign.UserClient;
-import com.yaoyyy.rubbish.common.entity.user.UserAuthTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,13 +37,12 @@ import org.springframework.stereotype.Component;
  * @author YaoYY
  * 2019-01-22 21:48
  */
+@AllArgsConstructor
 @Component
 public class UserService implements UserDetailsService {
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
     private UserClient userClient;
 
     private ThreadLocal<Long> uid = new ThreadLocal<>();

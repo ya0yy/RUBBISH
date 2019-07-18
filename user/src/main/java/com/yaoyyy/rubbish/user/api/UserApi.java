@@ -1,12 +1,13 @@
 package com.yaoyyy.rubbish.user.api;
 
 import com.yaoyyy.rubbish.common.R;
-import com.yaoyyy.rubbish.common.entity.user.User;
-import com.yaoyyy.rubbish.common.entity.user.UserAuthTO;
+import com.yaoyyy.rubbish.common.model.user.User;
+import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
 import com.yaoyyy.rubbish.user.exception.UserNotFound;
 import com.yaoyyy.rubbish.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +18,11 @@ import java.util.Map;
 /**
  * @author YaoYY
  */
+@AllArgsConstructor
+@Slf4j
 @RestController
 public class UserApi {
 
-    @Autowired
     private UserService userService;
 
     @ApiOperation(value = "获取当前登录用户的信息")

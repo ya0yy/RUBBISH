@@ -1,9 +1,6 @@
-package com.yaoyyy.rubbish.user;
+package com.yaoyyy.rubbish.common.model.user;
 
-import org.junit.Test;
-
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import lombok.Data;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
@@ -29,56 +26,19 @@ import java.util.concurrent.locks.ReentrantLock;
  * 　　　　　　　　  ┗┻┛ ┗┻┛+ + + +
  * <p>
  * rubbish-parent
- * 2019-02-28 19:38
+ * 2019-03-17 20:52
  *
- * @author yaoyang
+ * 角色实体
+ *
+ * @author yaoyy
  */
-public class GeneralTest {
+@Data
+public class Role {
+    private String pk;
+    private String role;
 
-    static final Lock lock = new ReentrantLock();
-
-    public static void main(String[] args) {
-
-        new Thread() {
-            @Override
-            public void run() {
-                sleep1();
-            }
-        }.start();
-
-        sleep1();
-
-    }
-
-    private static void sleep1() {
-
-        boolean b = lock.tryLock();
-        System.err.println(Thread.currentThread().getName() + "上锁" + b);
-        if (!b) {
-            throw new RuntimeException("茅坑被别人占了");
-        }
-
-        try {
-            Thread.sleep(1000*10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        lock.unlock();
-        System.err.println(Thread.currentThread().getName() + "解锁");
-    }
-
-    @Test
-    public void test() {
-        String s = "abcd";
-        System.out.println(s.replace("a", ""));
-        System.out.println(s);
-    }
-
-    @Test
-    public void testLongToInt() {
-        long l = -21474836600L;
-        int i = (int) l;
-        System.out.println(i);
+    @Override
+    public String toString() {
+        return role;
     }
 }

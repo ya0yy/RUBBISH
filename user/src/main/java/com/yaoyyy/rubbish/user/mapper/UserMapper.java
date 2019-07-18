@@ -1,8 +1,8 @@
 package com.yaoyyy.rubbish.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yaoyyy.rubbish.common.entity.user.User;
-import com.yaoyyy.rubbish.common.entity.user.UserAuthTO;
+import com.yaoyyy.rubbish.common.model.user.User;
+import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 

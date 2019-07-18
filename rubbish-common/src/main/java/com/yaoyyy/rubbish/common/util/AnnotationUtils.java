@@ -8,20 +8,16 @@ import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
+import java.lang.annotation.Annotation;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * @author: YaoYY
- * @create: 2019-02-17 10:22
+ * @author YaoYY
+ * @date 2019-02-17 10:22
  */
 public class AnnotationUtils extends org.springframework.core.annotation.AnnotationUtils {
-
-    /**
-     *  传入实例对象，返回属性值的map
-     */
 
     /**
      * @param annotationClass 注解类型
@@ -29,7 +25,7 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
      * @return java.util.Set<T>
      * @author YaoYY
      */
-    public static <T> Set<T> getInstancesFromContext(Class annotationClass, Class<T> tClass) throws Exception {
+    public static <T> Set<T> getInstancesFromContext(Class<? extends Annotation> annotationClass, Class<T> tClass) {
         Set<T> instances = new LinkedHashSet<>();
         Map<String, Object> objectMap = getObjectFromContext(annotationClass);
         for (String s : objectMap.keySet()) {
@@ -48,8 +44,7 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
      * @return java.util.Map<beanName,bean>
      * @author YaoYY
      */
-    public static Map<String, Object> getObjectFromContext(Class annotationClass) {
-        Map<String, Object> map = new LinkedHashMap<>();
+    public static Map<String, Object> getObjectFromContext(Class<? extends Annotation> annotationClass) {
         // 获取ApplicationContext
         ApplicationContext applicationContext = SpringContextUtils.getApplicationContext();
         return applicationContext.getBeansWithAnnotation(annotationClass);
@@ -98,7 +93,7 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
      * @author YaoYY
      */
     public static Class[] getAnnotationClass(String location, Class annotationClass) throws Exception {
-        Set<Object> clazzs = new LinkedHashSet<>();
+        Set<Class> clazzs = new LinkedHashSet<>();
         Resource[] resources = getResource(location);
         // 使用Spring提供的简单元数据读取工厂
         SimpleMetadataReaderFactory readerFactory = new SimpleMetadataReaderFactory();
@@ -117,8 +112,8 @@ public class AnnotationUtils extends org.springframework.core.annotation.Annotat
     }
 
     /**
-     * @description:  传入一个类路径（classpath*:）返回该路径下所有class的Resource
-     * @author: YaoYY
+     * 传入一个类路径（classpath*:）返回该路径下所有class的Resource
+     * @author YaoYY
      */
     private static Resource[] getResource(String location) {
         Resource[] resources = null;

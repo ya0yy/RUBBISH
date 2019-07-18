@@ -1,13 +1,14 @@
 package com.yaoyyy.rubbish.gateway.filter;
 
+import com.yaoyyy.rubbish.common.CodeEnum;
 import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.gateway.utils.WebFluxUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -22,10 +23,12 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
+
+
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
@@ -58,11 +61,11 @@ import java.util.List;
  *
  * @author yaoyang
  */
-@Component
+@AllArgsConstructor
 @Slf4j
+@Component
 public class ParseTokenFilter implements GlobalFilter, Ordered {
 
-    @Autowired
     RestTemplate restTemplate;
 
     @Override
@@ -85,21 +88,17 @@ public class ParseTokenFilter implements GlobalFilter, Ordered {
         HttpCookie rubbish = rubbishes.get(0);
         String[] split = rubbish.getValue().split("RUBBISH=");
         String token = split[0];
-        Claims claims = null;
+        Claims claims;
         // 解析token
         try {
-            claims = Jwts.parser().setSigningKey("Y".getBytes("utf-8")).parseClaimsJws(token).getBody();
-        } catch (UnsupportedEncodingException e) {
-            // getBytes("utf-8)抛的异常
-            e.printStackTrace();
-            return chain.filter(exchange);
+            claims = Jwts.parser().setSigningKey("Y".getBytes(StandardCharsets.UTF_8)).parseClaimsJws(token).getBody();
         } catch (SignatureException e) {
             log.warn("jwt被修改，签名不正确！用户名");
             return chain.filter(exchange);
         } catch (ExpiredJwtException e) {
             // token过期
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-            return WebFluxUtils.createVoidMono(exchange, R.error(-401, "登录失效"));
+            return WebFluxUtils.createVoidMono(exchange, R.error(CodeEnum.REQUIRE_LOGIN, "登录失效"));
         }
 
         // 获取jwt中包含的用户信息

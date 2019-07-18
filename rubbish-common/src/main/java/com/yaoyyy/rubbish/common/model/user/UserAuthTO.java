@@ -1,4 +1,4 @@
-package com.yaoyyy.rubbish.common.entity.user;
+package com.yaoyyy.rubbish.common.model.user;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

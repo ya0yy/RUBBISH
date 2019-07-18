@@ -2,7 +2,7 @@ package com.yaoyyy.rubbish.authserver.oauth;
 
 import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
 import com.yaoyyy.rubbish.authserver.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -49,20 +49,17 @@ import java.util.List;
  *
  * @author yaoyang
  */
+@AllArgsConstructor
 @EnableAuthorizationServer
 @Configuration
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter{
 
-    @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
     private AuthServerProperties authServerProperties;
 
-    @Autowired
     private JwtTokenEnhancer jwtTokenEnhancer;
 
-    @Autowired
     private UserService userDetailsService;
 
     @Override
@@ -105,7 +102,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 // 如果需要refresh_token认证则需要配置UserDetailService
                 .userDetailsService(userDetailsService)
                 // 加入自定义的异常处理器
-                .exceptionTranslator(new OAuth2ExceptionTranslator())
+                .exceptionTranslator(new OAuth2ExceptionTranslator<>())
 
         ;
     }

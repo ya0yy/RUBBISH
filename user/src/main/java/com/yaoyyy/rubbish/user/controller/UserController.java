@@ -1,7 +1,9 @@
 package com.yaoyyy.rubbish.user.controller;
 
 import com.yaoyyy.rubbish.common.R;
-import com.yaoyyy.rubbish.common.entity.user.User;
+import com.yaoyyy.rubbish.common.model.user.User;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +39,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author yaoyy
  */
+@AllArgsConstructor
+@Slf4j
 @RestController
 public class UserController {
 

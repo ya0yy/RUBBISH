@@ -1,9 +1,10 @@
 package com.yaoyyy.rubbish.authserver.feign.fallback;
 
+import com.yaoyyy.rubbish.common.CodeEnum;
 import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.authserver.feign.UserClient;
-import com.yaoyyy.rubbish.common.entity.user.User;
-import com.yaoyyy.rubbish.common.entity.user.UserAuthTO;
+import com.yaoyyy.rubbish.common.model.user.User;
+import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
 import feign.hystrix.FallbackFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -53,7 +54,7 @@ public class UserClientFallbackFactory implements FallbackFactory<UserClient> {
             @Override
             public R<UserAuthTO> userAuth(String username) {
                 log.warn(cause.getMessage());
-                return R.error("熔断");
+                return R.error();
             }
 
             @Override

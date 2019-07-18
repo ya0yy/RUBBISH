@@ -3,13 +3,14 @@ package com.yaoyyy.rubbish.common.util;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 /**
  * 获取Spring容器的工具类
- * @author: YaoYY
- * @create: 2019-02-18 14:17
+ * @author YaoYY
+ * 2019-02-18 14:17
  */
 @Component
 public class SpringContextUtils implements ApplicationContextAware {
@@ -22,7 +23,7 @@ public class SpringContextUtils implements ApplicationContextAware {
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(@Nullable ApplicationContext applicationContext) throws BeansException {
         SpringContextUtils.applicationContext = applicationContext;
     }
 
