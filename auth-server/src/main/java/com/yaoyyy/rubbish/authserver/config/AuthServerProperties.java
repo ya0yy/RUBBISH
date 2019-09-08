@@ -77,11 +77,11 @@ public class AuthServerProperties {
     /**
      * token过期时间（秒）默认12小时
      */
-    private Integer accessTokenValiditySeconds = 60 * 60 * 8; // default 12 hours.
+    private Integer accessTokenValiditySeconds = 60 * 60 * 8;
     /**
      * 刷新码过期时间
      */
-    private Integer refreshTokenValiditySeconds = 60 * 60 * 24 * 30; // default 30 days.
+    private Integer refreshTokenValiditySeconds = 60 * 60 * 24 * 30;
     /**
      * 未登录时跳转路径
      */

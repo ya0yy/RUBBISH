@@ -2,8 +2,8 @@ package com.yaoyyy.rubbish.user.service.impl;
 
 import com.yaoyyy.rubbish.common.model.user.User;
 import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
-import com.yaoyyy.rubbish.user.exception.UidCanNotBeEmpty;
-import com.yaoyyy.rubbish.user.exception.UserNotFound;
+import com.yaoyyy.rubbish.user.exception.UidCanNotBeEmptyException;
+import com.yaoyyy.rubbish.user.exception.UserNotFoundException;
 import com.yaoyyy.rubbish.user.mapper.UserMapper;
 import com.yaoyyy.rubbish.user.service.UserService;
 import lombok.AllArgsConstructor;
@@ -49,14 +49,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserInfo(Long uid) {
 
-        if (!uidIsOk(uid)) throw new UidCanNotBeEmpty();
+        if (!uidIsOk(uid)) throw new UidCanNotBeEmptyException();
 
         // 查询
         User user = userMapper.selectById(uid);
 
         // 该用户是否存在
         if (user == null) {
-            throw new UserNotFound(new User().setUid(uid));
+            throw new UserNotFoundException(new User().setUid(uid));
         }
 
         return user;

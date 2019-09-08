@@ -30,9 +30,9 @@ import com.yaoyyy.rubbish.common.model.user.User;
  *
  * @author yaoyang
  */
-public class UserNotFound extends RuntimeException {
+public class UserNotFoundException extends RuntimeException {
 
-    public static final String msg = "用户不存在";
+    private static final String MSG = "用户不存在";
 
     private User user;
 
@@ -40,23 +40,23 @@ public class UserNotFound extends RuntimeException {
         return user;
     }
 
-    public UserNotFound(User user) {
-        super(msg);
+    public UserNotFoundException(User user) {
+        super(MSG);
         this.user = user;
     }
 
-    public UserNotFound(String message, Throwable cause, User user) {
-        super(msg, cause);
+    public UserNotFoundException(String message, Throwable cause, User user) {
+        super(MSG, cause);
         this.user = user;
     }
 
-    public UserNotFound(Throwable cause, User user) {
+    public UserNotFoundException(Throwable cause, User user) {
         super(cause);
         this.user = user;
     }
 
-    public UserNotFound(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, User user) {
-        super(msg, cause, enableSuppression, writableStackTrace);
+    public UserNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, User user) {
+        super(MSG, cause, enableSuppression, writableStackTrace);
         this.user = user;
     }
 }

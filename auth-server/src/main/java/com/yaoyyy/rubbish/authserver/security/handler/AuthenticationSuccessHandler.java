@@ -2,7 +2,7 @@ package com.yaoyyy.rubbish.authserver.security.handler;
 
 import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
 import com.yaoyyy.rubbish.authserver.endpoint.AuthorizationCodeEndpoint;
-import com.yaoyyy.rubbish.authserver.service.UserService;
+import com.yaoyyy.rubbish.authserver.service.UserDetailServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -58,7 +58,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
     @Lazy
     AuthorizationCodeEndpoint authorizationCodeEndpoint;
 
-    UserService userService;
+    UserDetailServiceImpl userService;
 
     private String getAuthorizeCodePathTemplate
             = "/oauth/token?client_id=%s&scope=%s&grant_type=authorization_code&client_secret=%s&code=%s&uid=%s";

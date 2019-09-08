@@ -12,7 +12,6 @@ import org.springframework.security.oauth2.common.DefaultThrowableAnalyzer;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.web.util.ThrowableAnalyzer;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -48,14 +47,15 @@ import java.util.stream.Collectors;
  *
  * @author yaoyy
  */
+@Deprecated
 @Slf4j
-public class OAuth2ExceptionTranslator<T> implements WebResponseExceptionTranslator<T> {
+public class OAuth2ExceptionTranslator implements WebResponseExceptionTranslator {
 
     private ThrowableAnalyzer throwableAnalyzer = new DefaultThrowableAnalyzer();
 
     // TODO: 2019/7/17 此处黄色警告线！
     @Override
-    public ResponseEntity translate(Exception e) {
+    public ResponseEntity<R> translate(Exception e) {
 
         //分析e
         Throwable[] causeChain = throwableAnalyzer.determineCauseChain(e);
@@ -79,13 +79,8 @@ public class OAuth2ExceptionTranslator<T> implements WebResponseExceptionTransla
         // 访问被拒绝
         ase = (AccessDeniedException) throwableAnalyzer
                 .getFirstThrowableOfType(AccessDeniedException.class, causeChain);
-        if (ase instanceof AccessDeniedException) {
-        }
-
-        // 请求方法不被支持
-        ase = (HttpRequestMethodNotSupportedException) throwableAnalyzer.getFirstThrowableOfType(
-                HttpRequestMethodNotSupportedException.class, causeChain);
-        if (ase instanceof HttpRequestMethodNotSupportedException) {
+        if (ase != null) {
+            return null;
         }
 
         // 内部服务错误

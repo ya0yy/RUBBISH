@@ -3,7 +3,7 @@ package com.yaoyyy.rubbish.user.api;
 import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.common.model.user.User;
 import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
-import com.yaoyyy.rubbish.user.exception.UserNotFound;
+import com.yaoyyy.rubbish.user.exception.UserNotFoundException;
 import com.yaoyyy.rubbish.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -45,7 +45,7 @@ public class UserApi {
     public R<UserAuthTO> userAuth(@PathVariable("username") String username) {
         UserAuthTO auth= userService.getUserAuth(username);
         if (auth == null) {
-            throw new UserNotFound(new User());
+            throw new UserNotFoundException(new User());
         }
         return R.ok(auth);
     }

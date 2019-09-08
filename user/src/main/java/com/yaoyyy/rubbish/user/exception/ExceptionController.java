@@ -38,8 +38,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ResponseBody
 public class ExceptionController {
 
-    @ExceptionHandler(UserNotFound.class)
-    public R userNotFound(UserNotFound e) {
+    @ExceptionHandler(UserNotFoundException.class)
+    public R userNotFound(UserNotFoundException e) {
         return R.error(e.getMessage());
     }
 }

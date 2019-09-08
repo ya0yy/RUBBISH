@@ -1,7 +1,7 @@
 package com.yaoyyy.rubbish.authserver.oauth;
 
 import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
-import com.yaoyyy.rubbish.authserver.service.UserService;
+import com.yaoyyy.rubbish.authserver.service.UserDetailServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,7 +60,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private JwtTokenEnhancer jwtTokenEnhancer;
 
-    private UserService userDetailsService;
+    private UserDetailServiceImpl userDetailsService;
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
@@ -101,8 +101,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .authenticationManager(authenticationManager)
                 // 如果需要refresh_token认证则需要配置UserDetailService
                 .userDetailsService(userDetailsService)
-                // 加入自定义的异常处理器
-                .exceptionTranslator(new OAuth2ExceptionTranslator<>())
 
         ;
     }

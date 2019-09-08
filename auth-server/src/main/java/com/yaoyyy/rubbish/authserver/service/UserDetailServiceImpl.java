@@ -39,7 +39,7 @@ import org.springframework.stereotype.Component;
  */
 @AllArgsConstructor
 @Component
-public class UserService implements UserDetailsService {
+public class UserDetailServiceImpl implements UserDetailsService {
 
     private PasswordEncoder passwordEncoder;
 

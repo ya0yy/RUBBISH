@@ -55,7 +55,7 @@ import java.util.Map;
 @Component
 public class TokenEndpointAspect {
 
-    private static final String dataPoint =
+    private static final String DATA_POINT =
             "execution(* org.springframework.security.oauth2.provider.endpoint.TokenEndpoint.postAccessToken(..))";
 
     /**
@@ -65,7 +65,7 @@ public class TokenEndpointAspect {
 
     UserClient userClient;
 
-    @Around(dataPoint)
+    @Around(DATA_POINT)
     public Object replaceResult(ProceedingJoinPoint point) throws Throwable {
         ResponseEntity response = (ResponseEntity) point.proceed();
         // 拿到token

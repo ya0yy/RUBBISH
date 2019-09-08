@@ -2,7 +2,8 @@ package com.yaoyyy.rubbish.authserver.security;
 
 import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
 import com.yaoyyy.rubbish.authserver.security.handler.AuthenticationFailureHandler;
-import com.yaoyyy.rubbish.authserver.service.UserService;
+import com.yaoyyy.rubbish.authserver.service.UserDetailServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,20 +49,17 @@ import java.util.List;
  * @author yaoyang
  */
 // TODO: 2019/3/23 如果不要security，oauth是否能独立运作
+@AllArgsConstructor
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    AuthServerProperties authServerProperties;
+    private AuthServerProperties authServerProperties;
 
-    @Autowired
-    UserService userService;
+    private UserDetailServiceImpl userService;
 
-    @Autowired
-    AuthenticationFailureHandler authenticationFailureHandler;
+    private AuthenticationFailureHandler authenticationFailureHandler;
 
-    @Autowired
-    AuthenticationSuccessHandler authenticationSuccessHandler;
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
 
     /**
      * spring security规则

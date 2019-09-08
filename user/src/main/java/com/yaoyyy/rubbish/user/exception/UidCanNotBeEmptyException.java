@@ -30,9 +30,9 @@ import com.yaoyyy.rubbish.common.model.user.User;
  *
  * @author yaoyang
  */
-public class UidCanNotBeEmpty extends RuntimeException {
+public class UidCanNotBeEmptyException extends RuntimeException {
 
-    private static final String msg = "uid不能为null或者0";
+    private static final String MSG = "uid不能为null或者0";
 
     private User user;
 
@@ -40,22 +40,22 @@ public class UidCanNotBeEmpty extends RuntimeException {
         return user;
     }
 
-    public UidCanNotBeEmpty(User user) {
-        super(msg);
+    public UidCanNotBeEmptyException(User user) {
+        super(MSG);
         this.user = user;
     }
 
-    public UidCanNotBeEmpty(Throwable cause, User user) {
-        super(msg, cause);
+    public UidCanNotBeEmptyException(Throwable cause, User user) {
+        super(MSG, cause);
         this.user = user;
     }
 
-    public UidCanNotBeEmpty(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, User user) {
-        super(msg, cause, enableSuppression, writableStackTrace);
+    public UidCanNotBeEmptyException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, User user) {
+        super(MSG, cause, enableSuppression, writableStackTrace);
         this.user = user;
     }
 
-    public UidCanNotBeEmpty() {
-        super(msg);
+    public UidCanNotBeEmptyException() {
+        super(MSG);
     }
 }
