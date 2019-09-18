@@ -2,7 +2,7 @@ package com.yaoyyy.rubbish.authserver.feign;
 
 import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.authserver.feign.fallback.UserClientFallbackFactory;
-import com.yaoyyy.rubbish.common.model.user.User;
+import com.yaoyyy.rubbish.common.model.user.Customer;
 import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,5 +47,5 @@ public interface UserClient {
     R<UserAuthTO> userAuth(@PathVariable("username") String username);
 
     @RequestMapping(method = RequestMethod.GET, path = "/user_info/{uid}")
-    R<User> userInfo(@PathVariable("uid") Long uid);
+    R<Customer> userInfo(@PathVariable("uid") Long uid);
 }

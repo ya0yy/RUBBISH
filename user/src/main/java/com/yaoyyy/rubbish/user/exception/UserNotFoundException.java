@@ -1,6 +1,6 @@
 package com.yaoyyy.rubbish.user.exception;
 
-import com.yaoyyy.rubbish.common.model.user.User;
+import com.yaoyyy.rubbish.common.model.user.Customer;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
@@ -34,28 +34,28 @@ public class UserNotFoundException extends RuntimeException {
 
     private static final String MSG = "用户不存在";
 
-    private User user;
+    private Customer user;
 
-    public User getUid() {
+    public Customer getUid() {
         return user;
     }
 
-    public UserNotFoundException(User user) {
+    public UserNotFoundException(Customer user) {
         super(MSG);
         this.user = user;
     }
 
-    public UserNotFoundException(String message, Throwable cause, User user) {
+    public UserNotFoundException(String message, Throwable cause, Customer user) {
         super(MSG, cause);
         this.user = user;
     }
 
-    public UserNotFoundException(Throwable cause, User user) {
+    public UserNotFoundException(Throwable cause, Customer user) {
         super(cause);
         this.user = user;
     }
 
-    public UserNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, User user) {
+    public UserNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, Customer user) {
         super(MSG, cause, enableSuppression, writableStackTrace);
         this.user = user;
     }

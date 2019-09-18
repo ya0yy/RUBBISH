@@ -1,10 +1,10 @@
 package com.yaoyyy.rubbish.user.service.impl;
 
-import com.yaoyyy.rubbish.common.model.user.User;
+import com.yaoyyy.rubbish.common.model.user.Customer;
 import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
 import com.yaoyyy.rubbish.user.exception.UidCanNotBeEmptyException;
 import com.yaoyyy.rubbish.user.exception.UserNotFoundException;
-import com.yaoyyy.rubbish.user.mapper.UserMapper;
+import com.yaoyyy.rubbish.user.repository.UserRepository;
 import com.yaoyyy.rubbish.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,27 +43,46 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
-
-    UserMapper userMapper;
+    @Override
+    public Customer getUserInfo(Long uid) {
+        return null;
+    }
 
     @Override
-    public User getUserInfo(Long uid) {
+    public Customer getUserInfo(Long uid, String username) {
+        return null;
+    }
+
+    @Override
+    public String getUserPass(Long uid) {
+        return null;
+    }
+
+    @Override
+    public UserAuthTO getUserAuth(String username) {
+        return null;
+    }
+
+   /* UserRepository userRepository;
+
+    @Override
+    public Customer getUserInfo(Long uid) {
 
         if (!uidIsOk(uid)) throw new UidCanNotBeEmptyException();
 
         // 查询
-        User user = userMapper.selectById(uid);
+        Customer user = userRepository.selectById(uid);
 
         // 该用户是否存在
         if (user == null) {
-            throw new UserNotFoundException(new User().setUid(uid));
+            throw new UserNotFoundException(new Customer().setId(uid));
         }
 
         return user;
     }
 
     @Override
-    public User getUserInfo(Long uid, String username) {
+    public Customer getUserInfo(Long uid, String username) {
         // TODO: 2019/3/16 重载逻辑没写完
         return null;
     }
@@ -71,18 +90,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getUserPass(Long uid) {
         if (uidIsOk(uid)) return "";
-        return userMapper.queryUserPass(uid);
+        return userRepository.queryUserPass(uid);
     }
 
     @Override
     public UserAuthTO getUserAuth(String username) {
-        return StringUtils.isNotBlank(username) ? userMapper.queryUserAuth(username) : new UserAuthTO();
+        return StringUtils.isNotBlank(username) ? userRepository.queryUserAuth(username) : new UserAuthTO();
     }
 
-    /**
+    *//**
      * uid是否合法
-     */
+     *//*
     private boolean uidIsOk(Long uid) {
         return uid != null && uid > 0L;
-    }
+    }*/
 }

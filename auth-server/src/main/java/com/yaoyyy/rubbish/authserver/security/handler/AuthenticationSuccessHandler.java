@@ -61,7 +61,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
     UserDetailServiceImpl userService;
 
     private String getAuthorizeCodePathTemplate
-            = "/oauth/token?client_id=%s&scope=%s&grant_type=authorization_code&client_secret=%s&code=%s&uid=%s";
+            = "/oauth/token?client_id=%s&scope=%s&grant_type=authorization_code&client_secret=%s&code=%s&id=%s";
 
 
     @Override

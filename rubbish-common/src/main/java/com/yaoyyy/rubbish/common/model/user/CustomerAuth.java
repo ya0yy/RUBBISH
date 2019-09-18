@@ -1,6 +1,6 @@
-package com.yaoyyy.rubbish.user.exception;
+package com.yaoyyy.rubbish.common.model.user;
 
-import com.yaoyyy.rubbish.common.model.user.Customer;
+import lombok.Data;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
@@ -26,36 +26,19 @@ import com.yaoyyy.rubbish.common.model.user.Customer;
  * 　　　　　　　　  ┗┻┛ ┗┻┛+ + + +
  * <p>
  * rubbish-parent
- * 2019-02-28 11:05
+ * 2019-03-17 20:52
  *
- * @author yaoyang
+ * 用户权限实体
+ *
+ * @author yaoyy
  */
-public class UidCanNotBeEmptyException extends RuntimeException {
+@Data
+public class CustomerAuth {
+    private String pk;
+    private String role;
 
-    private static final String MSG = "uid不能为null或者0";
-
-    private Customer user;
-
-    public Customer getUser() {
-        return user;
-    }
-
-    public UidCanNotBeEmptyException(Customer user) {
-        super(MSG);
-        this.user = user;
-    }
-
-    public UidCanNotBeEmptyException(Throwable cause, Customer user) {
-        super(MSG, cause);
-        this.user = user;
-    }
-
-    public UidCanNotBeEmptyException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, Customer user) {
-        super(MSG, cause, enableSuppression, writableStackTrace);
-        this.user = user;
-    }
-
-    public UidCanNotBeEmptyException() {
-        super(MSG);
+    @Override
+    public String toString() {
+        return role;
     }
 }

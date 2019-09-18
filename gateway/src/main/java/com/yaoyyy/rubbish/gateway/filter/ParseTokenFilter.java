@@ -103,7 +103,7 @@ public class ParseTokenFilter implements GlobalFilter, Ordered {
 
         // 获取jwt中包含的用户信息
         String user_name = (String) claims.get("user_name");
-        Long uid = Long.valueOf((String) claims.get("uid"));
+        Long uid = Long.valueOf((String) claims.get("id"));
         List<?> authorities = claims.get("authorities", List.class);
 
         // 判断过期时间
@@ -117,7 +117,7 @@ public class ParseTokenFilter implements GlobalFilter, Ordered {
             requestBody.add("grant_type", "refresh_token");
 // TODO: 2019/3/14 参数值提取到配置文件
             HttpEntity<MultiValueMap> entity = new HttpEntity<>(requestBody, requestHeaders);
-            ResponseEntity<String> responseEntity = restTemplate.exchange("http://AUTH-SERVER/oauth/token?uid=" + uid, HttpMethod.POST, entity, String.class);
+            ResponseEntity<String> responseEntity = restTemplate.exchange("http://AUTH-SERVER/oauth/token?id=" + uid, HttpMethod.POST, entity, String.class);
             List<String> list = responseEntity.getHeaders().get("Set-Cookie");
             exchange.getResponse().getHeaders().put("Set-Cookie", list);
         }
@@ -141,7 +141,7 @@ public class ParseTokenFilter implements GlobalFilter, Ordered {
         }
         // 删掉最后一个逗号
         query.deleteCharAt(query.length() - 1);
-        query.append("&").append("uid=").append(uid);
+        query.append("&").append("id=").append(uid);
 
         try {
             URI newUri = UriComponentsBuilder.fromUri(uri)

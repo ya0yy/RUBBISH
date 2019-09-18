@@ -1,9 +1,8 @@
 package com.yaoyyy.rubbish.authserver.feign.fallback;
 
-import com.yaoyyy.rubbish.common.CodeEnum;
 import com.yaoyyy.rubbish.common.R;
 import com.yaoyyy.rubbish.authserver.feign.UserClient;
-import com.yaoyyy.rubbish.common.model.user.User;
+import com.yaoyyy.rubbish.common.model.user.Customer;
 import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
 import feign.hystrix.FallbackFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +57,7 @@ public class UserClientFallbackFactory implements FallbackFactory<UserClient> {
             }
 
             @Override
-            public R<User> userInfo(Long uid) {
+            public R<Customer> userInfo(Long uid) {
                 return null;
             }
         };

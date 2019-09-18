@@ -13,11 +13,19 @@ spring:
   datasource:
     platform: mysql
     driver-class-name: net.sf.log4jdbc.DriverSpy
-    url: jdbc:log4jdbc:mysql://104.155.218.48:3306/rubbish_dev
-    username: rubbish
-    password: rubbish_admin
+    url: jdbc:log4jdbc:mysql://localcent:3306/rubbish_dev?characterEncoding=utf-8
+    username: root
+    password: 123123
   application:
     name: user
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    database: mysql
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL57Dialect
+
 # 日志
 logging:
   level:

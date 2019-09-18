@@ -1,6 +1,6 @@
 package com.yaoyyy.rubbish.user.service;
 
-import com.yaoyyy.rubbish.common.model.user.User;
+import com.yaoyyy.rubbish.common.model.user.Customer;
 import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
 
 /**
@@ -42,7 +42,7 @@ public interface UserService {
      * @author YaoYY
      * @date 2019-02-28 AM 11:22:39
      */
-    User getUserInfo(Long uid);
+    Customer getUserInfo(Long uid);
 
     /**
      * 查询用户信息，带用户名校验
@@ -52,7 +52,7 @@ public interface UserService {
      * @return com.yaoyyy.rubbish.user.pojo.User
      * @author YaoYY
      */
-    User getUserInfo(Long uid, String username);
+    Customer getUserInfo(Long uid, String username);
 
     /**
      * 查询密码

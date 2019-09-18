@@ -1,6 +1,9 @@
-package com.yaoyyy.rubbish.common.model.user;
+package com.yaoyyy.rubbish.common.model.pojo;
 
 import lombok.Data;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * 　　　　　　　 ┏┓　 ┏┓+ +
@@ -26,19 +29,19 @@ import lombok.Data;
  * 　　　　　　　　  ┗┻┛ ┗┻┛+ + + +
  * <p>
  * rubbish-parent
- * 2019-03-17 20:52
- *
- * 角色实体
+ * 2019-09-16 22:16
  *
  * @author yaoyy
  */
-@Data
-public class Role {
-    private String pk;
-    private String role;
+@MappedSuperclass
+public class BaseEntity {
 
-    @Override
-    public String toString() {
-        return role;
-    }
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long id;
+
+    @Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '添加时间'")
+    protected LocalDateTime at;
+
+    @Column(columnDefinition = "DATETIME COMMENT '修改时间'")
+    protected LocalDateTime mt;
 }

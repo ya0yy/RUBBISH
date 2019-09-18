@@ -45,7 +45,7 @@ public class JwtTokenEnhancer implements TokenEnhancer {
 
         Map<String, Object> info = new HashMap<>();
         // 从请求中拿到uid
-        String uid = authentication.getOAuth2Request().getRequestParameters().get("uid");
+        String uid = authentication.getOAuth2Request().getRequestParameters().get("id");
 
         // 将info写入到token中，注意：此时token还是普通token，在下一个TokenEnhancer中才会转换为jwt
         info.put("uid", uid);

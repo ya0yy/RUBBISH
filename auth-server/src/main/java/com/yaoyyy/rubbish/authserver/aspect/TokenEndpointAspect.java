@@ -3,7 +3,7 @@ package com.yaoyyy.rubbish.authserver.aspect;
 import com.yaoyyy.rubbish.authserver.config.AuthServerProperties;
 import com.yaoyyy.rubbish.authserver.feign.UserClient;
 import com.yaoyyy.rubbish.common.R;
-import com.yaoyyy.rubbish.common.model.user.User;
+import com.yaoyyy.rubbish.common.model.user.Customer;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -77,19 +77,19 @@ public class TokenEndpointAspect {
 
         // 拿到uid
         Map params = (Map) point.getArgs()[1];
-        String uid = (String) params.get("uid");
+        String uid = (String) params.get("id");
 
         if (StringUtils.isBlank(uid)) {
             return response;
         }
 
         // 获取user信息
-        R<User> r = userClient.userInfo(Long.valueOf(uid));
+        R<Customer> r = userClient.userInfo(Long.valueOf(uid));
 
         return getResponse(token, r.getData());
     }
 
-    private ResponseEntity<R> getResponse(OAuth2AccessToken accessToken, User user) {
+    private ResponseEntity<R> getResponse(OAuth2AccessToken accessToken, Customer user) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json;charset=UTF-8");

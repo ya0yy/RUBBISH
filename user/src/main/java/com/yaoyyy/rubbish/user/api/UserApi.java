@@ -1,7 +1,7 @@
 package com.yaoyyy.rubbish.user.api;
 
 import com.yaoyyy.rubbish.common.R;
-import com.yaoyyy.rubbish.common.model.user.User;
+import com.yaoyyy.rubbish.common.model.user.Customer;
 import com.yaoyyy.rubbish.common.model.user.UserAuthTO;
 import com.yaoyyy.rubbish.user.exception.UserNotFoundException;
 import com.yaoyyy.rubbish.user.service.UserService;
@@ -27,16 +27,16 @@ public class UserApi {
 
     @ApiOperation(value = "获取当前登录用户的信息")
     @GetMapping("/user_info")
-    public R<User> userInfo(@RequestParam(value = "uid") Long uid,
-                            @RequestParam(value = "username") String username) {
-        User user = userService.getUserInfo(uid, username);
+    public R<Customer> userInfo(@RequestParam(value = "id") Long uid,
+                                @RequestParam(value = "username") String username) {
+        Customer user = userService.getUserInfo(uid, username);
         return R.ok(user);
     }
 
     @ApiOperation(value = "通过uid查询用户信息")
     @GetMapping("/user_info/{uid}")
-    public R<User> userInfo(@PathVariable("uid") Long uid) {
-        User user = userService.getUserInfo(uid);
+    public R<Customer> userInfo(@PathVariable("uid") Long uid) {
+        Customer user = userService.getUserInfo(uid);
         return R.ok(user);
     }
 
@@ -45,7 +45,7 @@ public class UserApi {
     public R<UserAuthTO> userAuth(@PathVariable("username") String username) {
         UserAuthTO auth= userService.getUserAuth(username);
         if (auth == null) {
-            throw new UserNotFoundException(new User());
+            throw new UserNotFoundException(new Customer());
         }
         return R.ok(auth);
     }
